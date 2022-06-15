@@ -10,13 +10,16 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.TODOTh">
         <activity
-            android:name=".ListAddActivity"
+            android:name=".activity.ListItemActivity"
+            android:exported="true" />
+        <activity
+            android:name=".activity.ListAddActivity"
             android:exported="false" />
         <activity
-            android:name=".MainActivity"
+            android:name=".activity.MainActivity"
             android:exported="false" />
         <activity
-            android:name=".SplashActivity"
+            android:name=".activity.SplashActivity"
             android:exported="true"
             android:theme="@style/SplashTheme">
             <intent-filter>
