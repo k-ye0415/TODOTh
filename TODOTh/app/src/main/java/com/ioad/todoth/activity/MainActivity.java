@@ -48,6 +48,7 @@ public class MainActivity extends AppCompatActivity {
         lists = new ArrayList<>();
         helper = new DBHelper(mContext);
 
+        btnSearch.setOnClickListener(btnOnClickListener);
         btnListAdd.setOnClickListener(btnOnClickListener);
 
 
@@ -89,8 +90,17 @@ public class MainActivity extends AppCompatActivity {
     View.OnClickListener btnOnClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View view) {
-            Intent intent = new Intent(mContext, ListAddActivity.class);
-            startActivity(intent);
+            Intent intent = null;
+            switch (view.getId()) {
+                case R.id.btn_search:
+                    intent = new Intent(mContext, ListSearchActivity.class);
+                    startActivity(intent);
+                    break;
+                case R.id.btn_list_group_add:
+                    intent = new Intent(mContext, ListAddActivity.class);
+                    startActivity(intent);
+                    break;
+            }
         }
     };
 }

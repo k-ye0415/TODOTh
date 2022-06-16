@@ -90,6 +90,16 @@ public class DBHelper extends SQLiteOpenHelper {
         db.execSQL(updateQuery);
     }
 
+    public void updateListItemData(String tableName, int index, String content) {
+        db = this.getWritableDatabase();
+        String updateQuery = "UPDATE " + tableName +
+                " SET CONTENT = '" + content + "', " +
+                "UPDATE_DATE = '" + getTime() + "' " +
+                "WHERE INDEX_NUM = " + index + ";";
+        Log.e(TAG, updateQuery);
+        db.execSQL(updateQuery);
+    }
+
 
 
     private String getTime() {

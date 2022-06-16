@@ -10,6 +10,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.TODOTh">
         <activity
+            android:name=".activity.ListSearchActivity"
+            android:exported="true" />
+        <activity
             android:name=".activity.ListItemActivity"
             android:exported="true" />
         <activity

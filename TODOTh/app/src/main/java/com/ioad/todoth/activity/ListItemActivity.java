@@ -1,12 +1,15 @@
 package com.ioad.todoth.activity;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.app.Dialog;
 import android.content.Intent;
 import android.database.Cursor;
+import android.graphics.Canvas;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -22,6 +25,8 @@ import com.ioad.todoth.adapter.ListItemAdapter;
 import com.ioad.todoth.bean.List;
 import com.ioad.todoth.common.ClickCallbackListener;
 import com.ioad.todoth.common.DBHelper;
+import com.ioad.todoth.common.ItemTouchHelperCallback;
+import com.ioad.todoth.common.ItemTouchHelperListener;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -50,6 +55,8 @@ public class ListItemActivity extends AppCompatActivity {
     ClickCallbackListener listener;
     ArrayList<String> seqs;
 
+    ItemTouchHelper touchHelper;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -72,8 +79,17 @@ public class ListItemActivity extends AppCompatActivity {
 
         btnItemAdd.setOnClickListener(btnOnClickListener);
 
+
     }
 
+    private void setUpRecyclerView() {
+        rvListItem.addItemDecoration(new RecyclerView.ItemDecoration() {
+            @Override
+            public void onDraw(@NonNull Canvas c, @NonNull RecyclerView parent, @NonNull RecyclerView.State state) {
+                touchHelper.onDraw(c, parent, state);
+            }
+        });
+    }
 
     @Override
     protected void onResume() {
@@ -124,6 +140,8 @@ public class ListItemActivity extends AppCompatActivity {
             rvListItem.setLayoutManager(layoutManager);
             adapter = new ListItemAdapter(ListItemActivity.this, R.layout.list_item, lists, listener);
             rvListItem.setAdapter(adapter);
+            touchHelper = new ItemTouchHelper(new ItemTouchHelperCallback((ItemTouchHelperListener) adapter));
+            touchHelper.attachToRecyclerView(rvListItem);
         }
     }
 
