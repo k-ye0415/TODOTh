@@ -31,6 +31,8 @@ import java.util.Arrays;
 
 public class ListItemAdapter extends RecyclerView.Adapter<ListItemAdapter.ViewHolder> implements ItemTouchHelperListener {
 
+    private final String TAG = getClass().getSimpleName();
+
     private Context mContext;
     private int layout = 0;
     private LayoutInflater inflater;
@@ -80,7 +82,7 @@ public class ListItemAdapter extends RecyclerView.Adapter<ListItemAdapter.ViewHo
 
         holder.cbCheck.setTag(lists.get(position));
 
-        Log.e("TAG", lists.get(position).getSeq() + lists.get(position).isChecked());
+        Log.e(TAG, lists.get(position).getSeq() + lists.get(position).isChecked());
 
         holder.cbCheck.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
@@ -91,8 +93,8 @@ public class ListItemAdapter extends RecyclerView.Adapter<ListItemAdapter.ViewHo
 
                 if (isCheck) {
                     if (lists.get(index).isChecked()) {
-                        Log.e("TAG", lists.get(index).isChecked() + "");
-                        Log.e("TAG", lists.get(index).getContent());
+                        Log.e(TAG, lists.get(index).isChecked() + "");
+                        Log.e(TAG, lists.get(index).getContent());
 
                         holder.tvContent.setPaintFlags(Paint.STRIKE_THRU_TEXT_FLAG);
 
@@ -100,15 +102,15 @@ public class ListItemAdapter extends RecyclerView.Adapter<ListItemAdapter.ViewHo
                     }
                 } else {
                     if (!lists.get(index).isChecked()) {
-                        Log.e("TAG", lists.get(index).isChecked() + "");
-                        Log.e("TAG", lists.get(index).getContent());
+                        Log.e(TAG, lists.get(index).isChecked() + "");
+                        Log.e(TAG, lists.get(index).getContent());
 
                         holder.tvContent.setPaintFlags(0);
 
                         numbers.remove(lists.get(index).getSeq());
                     }
                 }
-                Log.e("TAG", numbers.toString());
+                Log.e(TAG, numbers.toString());
                 callbackListener.callBackList(numbers);
 
             }

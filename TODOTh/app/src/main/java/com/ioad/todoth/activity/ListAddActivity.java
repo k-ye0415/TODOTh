@@ -21,6 +21,8 @@ import java.util.ArrayList;
 
 public class ListAddActivity extends AppCompatActivity {
 
+    private final String TAG = getClass().getSimpleName();
+
     private ArrayList<Item> items;
     private Item item;
 
@@ -66,7 +68,7 @@ public class ListAddActivity extends AppCompatActivity {
         listener = new ClickCallbackListener() {
             @Override
             public void callBack(int position) {
-                Log.e("TAG", "position :: " + position);
+                Log.e(TAG, "position :: " + position);
                 index = position;
             }
 

@@ -21,6 +21,8 @@ import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
 
+    private final String TAG = getClass().getSimpleName();
+
     Context mContext;
     ImageButton btnSearch, btnListAdd;
     RecyclerView rvList;
@@ -67,8 +69,8 @@ public class MainActivity extends AppCompatActivity {
             while (cursor.moveToNext()) {
                 String seq = String.valueOf(cursor.getInt(0));
                 String title = cursor.getString(1);
-                Log.e("TAG", "seq " + seq);
-                Log.e("TAG", "title " + title);
+                Log.e(TAG, "seq " + seq);
+                Log.e(TAG, "title " + title);
                 list = new List(seq, title);
                 lists.add(list);
 

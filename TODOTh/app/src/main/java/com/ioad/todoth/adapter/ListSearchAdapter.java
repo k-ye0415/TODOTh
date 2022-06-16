@@ -15,20 +15,18 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.ioad.todoth.R;
 import com.ioad.todoth.activity.ListItemActivity;
 import com.ioad.todoth.bean.List;
-import com.ioad.todoth.common.Util;
 
 import java.util.ArrayList;
 
-public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ViewHolder> {
+public class ListSearchAdapter extends RecyclerView.Adapter<ListSearchAdapter.ViewHolder> {
 
     private final String TAG = getClass().getSimpleName();
 
     private Context mContext;
     private int layout = 0;
-    private LayoutInflater inflater;
     private ArrayList<List> lists;
 
-    public ListAdapter(Context mContext, int layout, ArrayList<List> lists) {
+    public ListSearchAdapter(Context mContext, int layout, ArrayList<List> lists) {
         this.mContext = mContext;
         this.layout = layout;
         this.lists = lists;
@@ -38,16 +36,14 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ViewHolder> {
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(this.layout, parent, false);
-        ViewHolder holder = new ViewHolder(view);
-        return holder;
+        ViewHolder viewHolder = new ViewHolder(view);
+        return viewHolder;
     }
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        holder.ivListImg.setImageResource(Util.listImage[position]);
-        holder.tvListTitle.setText(lists.get(position).getTitle());
-//        holder.tvListCount.setText(lists.get(position).getCount());
-//        holder.tvListTotal.setText(lists.get(position).getTotal());
+        holder.tvContent.setText(lists.get(position).getContent());
+        holder.tvTitle.setText(lists.get(position).getTitle());
     }
 
     @Override
@@ -57,29 +53,28 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ViewHolder> {
 
     public class ViewHolder extends RecyclerView.ViewHolder {
 
-        public LinearLayout listItem;
-        public ImageView ivListImg;
-        public TextView tvListTitle, tvListCount, tvListTotal;
-
+        public LinearLayout llSearch;
+        public ImageView ivImage;
+        public TextView tvContent, tvTitle;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
 
-            listItem = itemView.findViewById(R.id.ll_list_item);
-            ivListImg = itemView.findViewById(R.id.iv_list_item_image);
-            tvListTitle = itemView.findViewById(R.id.tv_list_title);
-//            tvListCount = itemView.findViewById(R.id.tv_list_count);
-//            tvListTotal = itemView.findViewById(R.id.tv_list_total);
+            llSearch = itemView.findViewById(R.id.ll_search_item);
+            ivImage = itemView.findViewById(R.id.iv_search_image);
+            tvContent = itemView.findViewById(R.id.tv_search_content);
+            tvTitle = itemView.findViewById(R.id.tv_search_title);
 
-            listItem.setOnClickListener(new View.OnClickListener() {
+            llSearch.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-
+                    int position = getAdapterPosition();
                     Intent intent = new Intent(mContext, ListItemActivity.class);
-                    intent.putExtra("LIST_NAME", lists.get(getAdapterPosition()).getTitle());
+                    intent.putExtra("LIST_NAME",lists.get(position).getTitle());
                     mContext.startActivity(intent);
                 }
             });
+
 
         }
     }

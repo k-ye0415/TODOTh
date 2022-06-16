@@ -34,6 +34,8 @@ import java.util.Map;
 
 public class ListItemActivity extends AppCompatActivity {
 
+    private final String TAG = getClass().getSimpleName();
+
     TextView tvItemTitle;
     RecyclerView rvListItem;
     RecyclerView.Adapter adapter;
@@ -73,7 +75,7 @@ public class ListItemActivity extends AppCompatActivity {
 
         Intent intent = getIntent();
         title = intent.getStringExtra("LIST_NAME");
-        Log.e("TAG", intent.getStringExtra("LIST_NAME"));
+        Log.e(TAG, intent.getStringExtra("LIST_NAME"));
 
         tvItemTitle.setText(title);
 
@@ -109,7 +111,7 @@ public class ListItemActivity extends AppCompatActivity {
                 boolean isChecked = false;
 
 
-                Log.e("TAG", finish);
+                Log.e(TAG, cursor.getString(3));
 
                 if (finish.equals("N")) {
                     isChecked = false;
@@ -131,7 +133,7 @@ public class ListItemActivity extends AppCompatActivity {
                 @Override
                 public void callBackList(ArrayList<String> numbers) {
                     seqs = numbers;
-                    Log.e("TAG", "Activity : " + seqs.toString());
+                    Log.e(TAG, "Activity : " + seqs.toString());
                 }
             };
 
@@ -198,13 +200,13 @@ public class ListItemActivity extends AppCompatActivity {
     @Override
     protected void onPause() {
         super.onPause();
-        Log.e("TAG", "Activity onPause : " + seqs.toString());
+        Log.e(TAG, "Activity onPause : " + seqs.toString());
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        Log.e("TAG", "Activity onDestroy : " + seqs.toString());
+        Log.e(TAG, "Activity onDestroy : " + seqs.toString());
         if (seqs.size() != 0) {
             for (int i = 0; i < seqs.size(); i++) {
                 helper.updateListData("TODO_LIST", Integer.parseInt(seqs.get(i)));

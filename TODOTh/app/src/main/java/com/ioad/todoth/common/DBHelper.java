@@ -80,6 +80,38 @@ public class DBHelper extends SQLiteOpenHelper {
         return cursor;
     }
 
+    public Cursor selectSearchData(String search) {
+        db = getReadableDatabase();
+        String selectQuery = "SELECT L2.INDEX_NUM, L2.TITLE, L2.CONTENT " +
+                "FROM LIST_GROUP as L1 " +
+                "JOIN TODO_LIST as L2 " +
+                "ON L1.GROUP_TITLE = L2.TITLE " +
+                "WHERE (L2.TITLE || L2.CONTENT) LIKE '%" + search + "%'" +
+                "AND L1.DELETE_DATE IS NULL " +
+                "AND L2.DELETE_DATE IS NULL " +
+                "ORDER by L2.INDEX_NUM DESC;";
+        Log.e(TAG, selectQuery);
+        cursor = db.rawQuery(selectQuery, null);
+        return cursor;
+    }
+
+    public Cursor selectSearchFinishData(String search){
+        db = getReadableDatabase();
+        String selectQuery = "SELECT L2.INDEX_NUM, L2.TITLE, L2.CONTENT " +
+                "FROM LIST_GROUP as L1 " +
+                "JOIN TODO_LIST as L2 " +
+                "ON L1.GROUP_TITLE = L2.TITLE " +
+                "WHERE (L2.TITLE || L2.CONTENT) LIKE '%" + search + "%'" +
+                "AND L1.DELETE_DATE IS NULL " +
+                "AND L2.DELETE_DATE IS NULL " +
+                "AND L2.FINISH = 'N' " +
+                "ORDER by L2.INDEX_NUM DESC;";
+        Log.e(TAG, selectQuery);
+        cursor = db.rawQuery(selectQuery, null);
+        return cursor;
+    }
+
+
     public void updateListData(String tableName, int index) {
         db = this.getWritableDatabase();
         String updateQuery = "UPDATE " + tableName +
