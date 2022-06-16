@@ -1,6 +1,7 @@
 package com.ioad.todoth.activity;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.app.Dialog;
@@ -17,10 +18,14 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.ioad.todoth.R;
+import com.ioad.todoth.adapter.ListItemAdapter;
 import com.ioad.todoth.bean.List;
+import com.ioad.todoth.common.ClickCallbackListener;
 import com.ioad.todoth.common.DBHelper;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 public class ListItemActivity extends AppCompatActivity {
 
@@ -42,6 +47,9 @@ public class ListItemActivity extends AppCompatActivity {
     DBHelper helper;
     Cursor cursor;
 
+    ClickCallbackListener listener;
+    ArrayList<String> seqs;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,6 +62,7 @@ public class ListItemActivity extends AppCompatActivity {
 
         helper = new DBHelper(ListItemActivity.this);
         lists = new ArrayList<>();
+        seqs = new ArrayList<>();
 
         Intent intent = getIntent();
         title = intent.getStringExtra("LIST_NAME");
@@ -74,18 +83,49 @@ public class ListItemActivity extends AppCompatActivity {
 
     private void getList() {
         cursor = helper.selectListData("TODO_LIST", title);
+        lists.clear();
         if (cursor.getCount() != 0) {
             while (cursor.moveToNext()) {
                 String seq = String.valueOf(cursor.getInt(0));
                 String title = cursor.getString(1);
                 String content = cursor.getString(2);
-                
-                list = new List(seq, title, content);
+                String finish = cursor.getString(3) == null ? "N" : cursor.getString(3);
+                boolean isChecked = false;
+
+
+                Log.e("TAG", finish);
+
+                if (finish.equals("N")) {
+                    isChecked = false;
+                } else {
+                    isChecked = true;
+                }
+
+                list = new List(seq, content, finish, isChecked);
                 lists.add(list);
             }
+
+
+            listener = new ClickCallbackListener() {
+                @Override
+                public void callBack(int position) {
+
+                }
+
+                @Override
+                public void callBackList(ArrayList<String> numbers) {
+                    seqs = numbers;
+                    Log.e("TAG", "Activity : " + seqs.toString());
+                }
+            };
+
+
+            layoutManager = new LinearLayoutManager(ListItemActivity.this);
+            rvListItem.setLayoutManager(layoutManager);
+            adapter = new ListItemAdapter(ListItemActivity.this, R.layout.list_item, lists, listener);
+            rvListItem.setAdapter(adapter);
         }
     }
-
 
 
     View.OnClickListener btnOnClickListener = new View.OnClickListener() {
@@ -137,5 +177,20 @@ public class ListItemActivity extends AppCompatActivity {
         }
     };
 
+    @Override
+    protected void onPause() {
+        super.onPause();
+        Log.e("TAG", "Activity onPause : " + seqs.toString());
+    }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        Log.e("TAG", "Activity onDestroy : " + seqs.toString());
+        if (seqs.size() != 0) {
+            for (int i = 0; i < seqs.size(); i++) {
+                helper.updateListData("TODO_LIST", Integer.parseInt(seqs.get(i)));
+            }
+        }
+    }
 }

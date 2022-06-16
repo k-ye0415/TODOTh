@@ -16,7 +16,6 @@ import com.ioad.todoth.R;
 import com.ioad.todoth.adapter.ListAdapter;
 import com.ioad.todoth.bean.List;
 import com.ioad.todoth.common.DBHelper;
-import com.ioad.todoth.common.Util;
 
 import java.util.ArrayList;
 
@@ -80,7 +79,7 @@ public class MainActivity extends AppCompatActivity {
 
         layoutManager = new LinearLayoutManager(mContext);
         rvList.setLayoutManager(layoutManager);
-        adapter = new ListAdapter(mContext, R.layout.list_item, lists);
+        adapter = new ListAdapter(mContext, R.layout.group_list_item, lists);
         rvList.setAdapter(adapter);
 
 

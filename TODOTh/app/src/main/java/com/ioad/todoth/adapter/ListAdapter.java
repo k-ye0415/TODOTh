@@ -42,7 +42,7 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ViewHolder> {
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-//        holder.ivListImg.setImageDrawable();
+        holder.ivListImg.setImageResource(Util.listImage[position]);
         holder.tvListTitle.setText(lists.get(position).getTitle());
 //        holder.tvListCount.setText(lists.get(position).getCount());
 //        holder.tvListTotal.setText(lists.get(position).getTotal());
@@ -64,7 +64,7 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ViewHolder> {
             super(itemView);
 
             listItem = itemView.findViewById(R.id.ll_list_item);
-//            ivListImg = itemView.findViewById(R.id.iv_list_item_image);
+            ivListImg = itemView.findViewById(R.id.iv_list_item_image);
             tvListTitle = itemView.findViewById(R.id.tv_list_title);
 //            tvListCount = itemView.findViewById(R.id.tv_list_count);
 //            tvListTotal = itemView.findViewById(R.id.tv_list_total);

@@ -1,16 +1,35 @@
 package com.ioad.todoth.bean;
 
+import java.util.Map;
+
 public class List {
     String seq;
     String title;
     String content;
     String date;
+    String finish;
     String count;
     String total;
+    Map<String, Boolean> finishMap;
+    boolean isChecked;
+
+    public List(String seq, String content, Map<String, Boolean> finishMap) {
+        this.seq = seq;
+        this.content = content;
+        this.finishMap = finishMap;
+    }
+
 
     public List(String seq, String title) {
         this.seq = seq;
         this.title = title;
+    }
+
+    public List(String seq, String content, String finish, boolean isChecked) {
+        this.seq = seq;
+        this.content = content;
+        this.finish = finish;
+        this.isChecked = isChecked;
     }
 
     public List(String seq, String title, String content) {
@@ -72,5 +91,29 @@ public class List {
 
     public void setDate(String date) {
         this.date = date;
+    }
+
+    public boolean isChecked() {
+        return isChecked;
+    }
+
+    public void setChecked(boolean checked) {
+        isChecked = checked;
+    }
+
+    public String getFinish() {
+        return finish;
+    }
+
+    public void setFinish(String finish) {
+        this.finish = finish;
+    }
+
+    public Map<String, Boolean> getFinishMap() {
+        return finishMap;
+    }
+
+    public void setFinishMap(Map<String, Boolean> finishMap) {
+        this.finishMap = finishMap;
     }
 }

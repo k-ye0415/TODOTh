@@ -48,7 +48,7 @@ public class ListAddAdapter extends RecyclerView.Adapter<ListAddAdapter.ViewHold
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-//        holder.ivItemImage.setImageDrawable(items.get(position).getImage());
+        holder.ivItemImage.setImageResource(items.get(position).getImage());
         holder.tvItemText.setText(items.get(position).getName());
     }
 

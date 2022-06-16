@@ -51,7 +51,7 @@ public class DBHelper extends SQLiteOpenHelper {
 
     public void insertListData(String tableName, String title, String content) {
         db = getWritableDatabase();
-        String insertQuery = "INSERT INTO " + tableName + " ('TITLE', 'CONTENT', 'ADD_DATE') VALUES ('" + title + "', '" + content + "', '" + getTime() + "');";
+        String insertQuery = "INSERT INTO " + tableName + " ('TITLE', 'CONTENT', 'FINISH', 'ADD_DATE') VALUES ('" + title + "', '" + content + "', 'N', '" + getTime() + "');";
         Log.e(TAG, insertQuery);
         db.execSQL(insertQuery);
     }
@@ -70,13 +70,24 @@ public class DBHelper extends SQLiteOpenHelper {
 
     public Cursor selectListData(String tableName, String title) {
         db = getReadableDatabase();
-        String selectQuery = "SELECT INDEX_NUM, TITLE, CONTENT " +
+        String selectQuery = "SELECT INDEX_NUM, TITLE, CONTENT, FINISH " +
                 "FROM " + tableName +
                 " WHERE TITLE = '" + title + "'" +
+                " AND DELETE_DATE IS NULL" +
                 " ORDER by INDEX_NUM DESC;";
         Log.e(TAG, selectQuery);
         cursor = db.rawQuery(selectQuery, null);
         return cursor;
+    }
+
+    public void updateListData(String tableName, int index) {
+        db = this.getWritableDatabase();
+        String updateQuery = "UPDATE " + tableName +
+                " SET FINISH = 'Y', " +
+                "UPDATE_DATE = '" + getTime() + "' " +
+                "WHERE INDEX_NUM = " + index + ";";
+        Log.e(TAG, updateQuery);
+        db.execSQL(updateQuery);
     }
 
 

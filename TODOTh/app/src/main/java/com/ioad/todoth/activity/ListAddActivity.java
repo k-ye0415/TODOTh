@@ -9,7 +9,6 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-import android.widget.GridLayout;
 
 import com.ioad.todoth.R;
 import com.ioad.todoth.adapter.ListAddAdapter;
@@ -70,9 +69,14 @@ public class ListAddActivity extends AppCompatActivity {
                 Log.e("TAG", "position :: " + position);
                 index = position;
             }
+
+            @Override
+            public void callBackList(ArrayList<String> numbers) {
+
+            }
         };
 
-        adapter = new ListAddAdapter(ListAddActivity.this, R.layout.list_add_item, items, listener);
+        adapter = new ListAddAdapter(ListAddActivity.this, R.layout.group_list_add_item, items, listener);
         rvListAdd.setAdapter(adapter);
     }
 
