@@ -36,7 +36,6 @@ public class MainActivity extends AppCompatActivity {
     DBHelper helper;
     Cursor cursor;
     int index;
-    ItemTouchHelper touchHelper;
 
 
     @Override
@@ -50,7 +49,7 @@ public class MainActivity extends AppCompatActivity {
         rvList = findViewById(R.id.rv_list);
 
         Intent intent = getIntent();
-        index = intent.getIntExtra("INDEX", 0);
+        index = intent.getIntExtra("CALLBACK_INDEX", 0);
 
         lists = new ArrayList<>();
         helper = new DBHelper(mContext);
@@ -66,7 +65,6 @@ public class MainActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         showList();
-//        setUpRecyclerView();
     }
 
     private void showList() {
@@ -86,9 +84,6 @@ public class MainActivity extends AppCompatActivity {
                 lists.add(list);
 
             }
-        } else {
-//            list = new List(null, null, 0);
-//            lists.add(list);
         }
 
         layoutManager = new LinearLayoutManager(mContext);

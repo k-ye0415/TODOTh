@@ -1,6 +1,9 @@
 package com.ioad.todoth.adapter;
 
 import android.content.Context;
+import android.graphics.Color;
+import android.util.Log;
+import android.util.SparseBooleanArray;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,21 +23,35 @@ import com.ioad.todoth.bean.Item;
 import com.ioad.todoth.common.ClickCallbackListener;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 public class ListAddAdapter extends RecyclerView.Adapter<ListAddAdapter.ViewHolder> {
+
+    private final String TAG = getClass().getSimpleName();
 
     private Context mContext;
     private int layout = 0;
     private ArrayList<Item> items;
-    private LayoutInflater inflater;
     private ClickCallbackListener callbackListener;
-
+    private boolean isClick = true;
+    private int titleIndex = 0;
+    private SparseBooleanArray mSelectedItems = new SparseBooleanArray(0);
+    private String[] selectItem = new String[1];
 
     public ListAddAdapter(Context mContext, int layout, ArrayList<Item> items, ClickCallbackListener listener) {
         this.mContext = mContext;
         this.layout = layout;
         this.items = items;
         this.callbackListener = listener;
+    }
+
+    public ListAddAdapter(Context mContext, int layout, ArrayList<Item> items, ClickCallbackListener listener, int index) {
+        this.mContext = mContext;
+        this.layout = layout;
+        this.items = items;
+        this.callbackListener = listener;
+        this.titleIndex = index;
+        Log.e(TAG, "index " + titleIndex);
     }
 
     @NonNull
@@ -48,9 +65,21 @@ public class ListAddAdapter extends RecyclerView.Adapter<ListAddAdapter.ViewHold
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
+        if (titleIndex != 0) {
+            updateItemSelected(titleIndex);
+//            toggleItemSelected(position);
+        }
         holder.ivItemImage.setImageResource(items.get(position).getImage());
         holder.tvItemText.setText(items.get(position).getName());
+
+        if (mSelectedItems.get(position, false)) {
+            holder.ivItemImage.setBackgroundColor(Color.BLUE);
+        } else {
+            holder.ivItemImage.setBackgroundColor(Color.WHITE);
+        }
     }
+
+    int temp;
 
     @Override
     public int getItemCount() {
@@ -70,15 +99,58 @@ public class ListAddAdapter extends RecyclerView.Adapter<ListAddAdapter.ViewHold
             tvItemText = itemView.findViewById(R.id.tv_list_item_text);
 
 
-            cvLayout.setOnClickListener(new View.OnClickListener() {
+            ivItemImage.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    Toast.makeText(mContext, "position " + getAdapterPosition(), Toast.LENGTH_SHORT).show();
-                    cvLayout.setBackgroundColor(0x0000000);
-                    callbackListener.callBack(getAdapterPosition());
+                    int position = getAdapterPosition();
+
+                    if (mSelectedItems.size() >= 1) {
+//                        mSelectedItems.delete(temp);
+                        mSelectedItems.clear();
+                        mSelectedItems.put(position, false);
+                        notifyItemChanged(temp);
+//                        temp = 0;
+                    } else {
+                        temp = position;
+                    }
+
+                    if (titleIndex != 0) {
+                        position = titleIndex;
+                        titleIndex = 0;
+                        toggleItemSelected(position);
+                    } else {
+                        toggleItemSelected(position);
+                    }
+
+                    callbackListener.callBack(position);
                 }
             });
 
         }
     }
+
+
+    private void toggleItemSelected(int position) {
+        if (mSelectedItems.get(position, false) == true) {
+            mSelectedItems.delete(position);
+//            selectItem[0] = null;
+            Log.e(TAG, "TRUE " + mSelectedItems.size());
+            notifyItemChanged(position);
+        } else {
+            mSelectedItems.put(position, true);
+            Log.e(TAG, "FALSE " + mSelectedItems.size());
+//            selectItem[0] = String.valueOf(position);
+            notifyItemChanged(position);
+        }
+    }
+
+    private boolean isItemSelected(int position) {
+        return mSelectedItems.get(position, false);
+    }
+
+    private void updateItemSelected(int position) {
+//        selectItem[0] = String.valueOf(position);
+        mSelectedItems.put(position, true);
+    }
+
 }

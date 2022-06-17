@@ -13,6 +13,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.ioad.todoth.R;
+import com.ioad.todoth.adapter.ListAdapter;
 import com.ioad.todoth.adapter.ListAddAdapter;
 import com.ioad.todoth.bean.Item;
 import com.ioad.todoth.common.ClickCallbackListener;
@@ -37,7 +38,9 @@ public class ListAddActivity extends AppCompatActivity {
     private DBHelper helper;
     private int index;
     ClickCallbackListener listener;
-
+    private String titleName;
+    private boolean isUpdate;
+    private int titleIndex;
 
 
     @Override
@@ -52,15 +55,27 @@ public class ListAddActivity extends AppCompatActivity {
         gridLayoutManager = new GridLayoutManager(ListAddActivity.this, 2);
         rvListAdd.setLayoutManager(gridLayoutManager);
 
-        listAdd();
+        Intent intent = getIntent();
+        if (intent != null) {
+            titleName = intent.getStringExtra("TITLE_NAME");
+            isUpdate = intent.getBooleanExtra("UPDATE_TITLE", false);
+            titleIndex = intent.getIntExtra("LIST_INDEX", 0);
+            Log.e(TAG, "index1 " + titleIndex);
+            etTitleName.setText(titleName);
+        }
 
         btnListAdd.setOnClickListener(btnOnClickListener);
 
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        listAdd();
+    }
+
     private void listAdd() {
         items = new ArrayList<>();
-
 
 
         for (int i = 0; i < Util.listName.length; i++) {
@@ -82,20 +97,27 @@ public class ListAddActivity extends AppCompatActivity {
             }
         };
 
-        adapter = new ListAddAdapter(ListAddActivity.this, R.layout.group_list_add_item, items, listener);
+        if (titleIndex == 0) {
+            adapter = new ListAddAdapter(ListAddActivity.this, R.layout.group_list_add_item, items, listener);
+        } else {
+            Log.e(TAG, "index2 " + titleIndex);
+            adapter = new ListAddAdapter(ListAddActivity.this, R.layout.group_list_add_item, items, listener, titleIndex);
+        }
         rvListAdd.setAdapter(adapter);
+
+
     }
 
 
     View.OnClickListener btnOnClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View view) {
-            String titleName = etTitleName.getText().toString();
+            titleName = etTitleName.getText().toString();
             if (titleName.length() != 0) {
                 helper.insertListGroupData("LIST_GROUP", Util.listName[index], String.valueOf(index), titleName);
 //            helper.insertListData("TODO_LIST", Util.listName[index]);
                 Intent intent = new Intent(ListAddActivity.this, MainActivity.class);
-                intent.putExtra("INDEX", intent);
+                intent.putExtra("CALLBACK_INDEX", index);
                 startActivity(intent);
             } else {
                 Toast.makeText(ListAddActivity.this, "Title Check!", Toast.LENGTH_SHORT).show();

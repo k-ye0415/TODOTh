@@ -5,17 +5,29 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".activity.ListItemActivity"
-    android:padding="20dp">
+    android:padding="20dp"
+    tools:context=".activity.ListItemActivity">
 
-    <TextView
-        android:id="@+id/tv_list_item_title"
+    <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="title"
-        android:textSize="25dp"
-        android:textStyle="bold"
-        android:gravity="center"/>
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/tv_list_item_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:layout_gravity="center"
+            android:text="title"
+            android:textSize="25dp"
+            android:textStyle="bold" />
+        <Button
+            android:id="@+id/btn_update_title_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="right"
+            />
+    </FrameLayout>
 
     <FrameLayout
         android:layout_width="match_parent"
@@ -25,13 +37,13 @@
             android:id="@+id/rv_list_item"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
+
         <Button
             android:id="@+id/btn_list_item_add"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="bottom|right"
-            android:layout_margin="15dp"
-            />
+            android:layout_margin="15dp" />
     </FrameLayout>
 
 </LinearLayout>

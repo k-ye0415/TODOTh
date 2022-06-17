@@ -36,7 +36,7 @@ public class ListItemActivity extends AppCompatActivity {
     RecyclerView rvListItem;
     RecyclerView.Adapter adapter;
     RecyclerView.LayoutManager layoutManager;
-    Button btnItemAdd;
+    Button btnItemAdd, btnTitleUpdate;
 
     ArrayList<List> lists;
     List list;
@@ -45,6 +45,7 @@ public class ListItemActivity extends AppCompatActivity {
     Button btnAddCancel, btnAdd;
 
     String title, titleName;
+    int titleIndex;
 
     Dialog dialog;
     DBHelper helper;
@@ -52,8 +53,6 @@ public class ListItemActivity extends AppCompatActivity {
 
     ClickCallbackListener listener;
     ArrayList<String> seqs;
-
-    ItemTouchHelper touchHelper;
 
 
     @Override
@@ -64,6 +63,7 @@ public class ListItemActivity extends AppCompatActivity {
         tvItemTitle = findViewById(R.id.tv_list_item_title);
         rvListItem = findViewById(R.id.rv_list_item);
         btnItemAdd = findViewById(R.id.btn_list_item_add);
+        btnTitleUpdate = findViewById(R.id.btn_update_title_name);
 
         helper = new DBHelper(ListItemActivity.this);
         lists = new ArrayList<>();
@@ -72,11 +72,13 @@ public class ListItemActivity extends AppCompatActivity {
         Intent intent = getIntent();
         title = intent.getStringExtra("LIST_NAME");
         titleName = intent.getStringExtra("TITLE_NAME");
+        titleIndex = intent.getIntExtra("LIST_INDEX", 0);
 
+        Log.e(TAG, "index " + titleIndex);
         tvItemTitle.setText(titleName);
 
         btnItemAdd.setOnClickListener(btnOnClickListener);
-
+        btnTitleUpdate.setOnClickListener(btnOnClickListener);
 
     }
 
@@ -136,27 +138,36 @@ public class ListItemActivity extends AppCompatActivity {
     View.OnClickListener btnOnClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View view) {
-            dialog = new Dialog(ListItemActivity.this);
-            dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-            dialog.setContentView(R.layout.dialog_layout);
+            switch (view.getId()) {
+                case R.id.btn_list_item_add:
+                    dialog = new Dialog(ListItemActivity.this);
+                    dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+                    dialog.setContentView(R.layout.dialog_layout);
 
-            WindowManager.LayoutParams layoutParams = new WindowManager.LayoutParams();
-            layoutParams.copyFrom(dialog.getWindow().getAttributes());
-            layoutParams.width = WindowManager.LayoutParams.MATCH_PARENT;
-            layoutParams.height = WindowManager.LayoutParams.WRAP_CONTENT;
+                    WindowManager.LayoutParams layoutParams = new WindowManager.LayoutParams();
+                    layoutParams.copyFrom(dialog.getWindow().getAttributes());
+                    layoutParams.width = WindowManager.LayoutParams.MATCH_PARENT;
+                    layoutParams.height = WindowManager.LayoutParams.WRAP_CONTENT;
 
-            Window window = dialog.getWindow();
-            window.setAttributes(layoutParams);
-            dialog.show();
+                    Window window = dialog.getWindow();
+                    window.setAttributes(layoutParams);
+                    dialog.show();
 
-            etItem = dialog.findViewById(R.id.et_item);
-            btnAddCancel = dialog.findViewById(R.id.btn_item_add_cancel);
-            btnAdd = dialog.findViewById(R.id.btn_item_add);
+                    etItem = dialog.findViewById(R.id.et_item);
+                    btnAddCancel = dialog.findViewById(R.id.btn_item_add_cancel);
+                    btnAdd = dialog.findViewById(R.id.btn_item_add);
 
-            btnAddCancel.setOnClickListener(dialogBtnOnClickListener);
-            btnAdd.setOnClickListener(dialogBtnOnClickListener);
-
-
+                    btnAddCancel.setOnClickListener(dialogBtnOnClickListener);
+                    btnAdd.setOnClickListener(dialogBtnOnClickListener);
+                    break;
+                case R.id.btn_update_title_name:
+                    Intent intent = new Intent(ListItemActivity.this, ListAddActivity.class);
+                    intent.putExtra("TITLE_NAME", titleName);
+                    intent.putExtra("UPDATE_TITLE", true);
+                    intent.putExtra("LIST_INDEX", titleIndex);
+                    startActivity(intent);
+                    break;
+            }
         }
     };
 

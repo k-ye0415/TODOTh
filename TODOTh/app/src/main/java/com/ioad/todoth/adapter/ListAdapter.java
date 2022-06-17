@@ -2,6 +2,7 @@ package com.ioad.todoth.adapter;
 
 import android.content.Context;
 import android.content.Intent;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -75,6 +76,8 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ViewHolder> {
                     Intent intent = new Intent(mContext, ListItemActivity.class);
                     intent.putExtra("LIST_NAME", lists.get(getAdapterPosition()).getTitle());
                     intent.putExtra("TITLE_NAME", lists.get(getAdapterPosition()).getTitleName());
+                    intent.putExtra("LIST_INDEX", lists.get(getAdapterPosition()).getIndex());
+                    Log.e(TAG, "index " + lists.get(getAdapterPosition()).getIndex());
                     mContext.startActivity(intent);
                 }
             });
