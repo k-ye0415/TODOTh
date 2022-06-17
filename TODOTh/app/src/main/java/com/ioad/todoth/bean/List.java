@@ -12,6 +12,8 @@ public class List {
     String total;
     Map<String, Boolean> finishMap;
     boolean isChecked;
+    int index;
+    String titleName;
 
     public List(String seq, String content, Map<String, Boolean> finishMap) {
         this.seq = seq;
@@ -20,9 +22,11 @@ public class List {
     }
 
 
-    public List(String seq, String title) {
+    public List(String seq, String title, int index, String titleName) {
         this.seq = seq;
         this.title = title;
+        this.index = index;
+        this.titleName = titleName;
     }
 
     public List(String seq, String content, String finish, boolean isChecked) {
@@ -36,13 +40,6 @@ public class List {
         this.seq = seq;
         this.title = title;
         this.content = content;
-    }
-
-    public List(String seq, String title, String content, String count) {
-        this.seq = seq;
-        this.title = title;
-        this.date = content;
-        this.count = count;
     }
 
     public String getTitle() {
@@ -115,5 +112,21 @@ public class List {
 
     public void setFinishMap(Map<String, Boolean> finishMap) {
         this.finishMap = finishMap;
+    }
+
+    public int getIndex() {
+        return index;
+    }
+
+    public void setIndex(int index) {
+        this.index = index;
+    }
+
+    public String getTitleName() {
+        return titleName;
+    }
+
+    public void setTitleName(String titleName) {
+        this.titleName = titleName;
     }
 }

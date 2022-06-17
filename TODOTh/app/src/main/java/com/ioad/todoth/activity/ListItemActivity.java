@@ -25,12 +25,8 @@ import com.ioad.todoth.adapter.ListItemAdapter;
 import com.ioad.todoth.bean.List;
 import com.ioad.todoth.common.ClickCallbackListener;
 import com.ioad.todoth.common.DBHelper;
-import com.ioad.todoth.common.ItemTouchHelperCallback;
-import com.ioad.todoth.common.ItemTouchHelperListener;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
 
 public class ListItemActivity extends AppCompatActivity {
 
@@ -48,7 +44,7 @@ public class ListItemActivity extends AppCompatActivity {
     EditText etItem;
     Button btnAddCancel, btnAdd;
 
-    String title;
+    String title, titleName;
 
     Dialog dialog;
     DBHelper helper;
@@ -75,22 +71,13 @@ public class ListItemActivity extends AppCompatActivity {
 
         Intent intent = getIntent();
         title = intent.getStringExtra("LIST_NAME");
-        Log.e(TAG, intent.getStringExtra("LIST_NAME"));
+        titleName = intent.getStringExtra("TITLE_NAME");
 
-        tvItemTitle.setText(title);
+        tvItemTitle.setText(titleName);
 
         btnItemAdd.setOnClickListener(btnOnClickListener);
 
 
-    }
-
-    private void setUpRecyclerView() {
-        rvListItem.addItemDecoration(new RecyclerView.ItemDecoration() {
-            @Override
-            public void onDraw(@NonNull Canvas c, @NonNull RecyclerView parent, @NonNull RecyclerView.State state) {
-                touchHelper.onDraw(c, parent, state);
-            }
-        });
     }
 
     @Override
@@ -142,8 +129,6 @@ public class ListItemActivity extends AppCompatActivity {
             rvListItem.setLayoutManager(layoutManager);
             adapter = new ListItemAdapter(ListItemActivity.this, R.layout.list_item, lists, listener);
             rvListItem.setAdapter(adapter);
-            touchHelper = new ItemTouchHelper(new ItemTouchHelperCallback((ItemTouchHelperListener) adapter));
-            touchHelper.attachToRecyclerView(rvListItem);
         }
     }
 

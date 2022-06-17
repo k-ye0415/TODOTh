@@ -26,7 +26,7 @@
             android:id="@+id/iv_list_add_item_image"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/dog" />
+             />
         <TextView
             android:id="@+id/tv_list_item_text"
             android:layout_width="match_parent"

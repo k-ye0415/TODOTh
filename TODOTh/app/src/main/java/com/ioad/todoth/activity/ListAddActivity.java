@@ -9,6 +9,8 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
+import android.widget.Toast;
 
 import com.ioad.todoth.R;
 import com.ioad.todoth.adapter.ListAddAdapter;
@@ -26,6 +28,7 @@ public class ListAddActivity extends AppCompatActivity {
     private ArrayList<Item> items;
     private Item item;
 
+    private EditText etTitleName;
     private Button btnListAdd;
 
     private RecyclerView rvListAdd;
@@ -42,6 +45,7 @@ public class ListAddActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_list_add);
 
+        etTitleName = findViewById(R.id.et_title);
         rvListAdd = findViewById(R.id.rv_add_list);
         btnListAdd = findViewById(R.id.btn_list_add);
         helper = new DBHelper(ListAddActivity.this);
@@ -86,11 +90,16 @@ public class ListAddActivity extends AppCompatActivity {
     View.OnClickListener btnOnClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View view) {
-            helper.insertListGroupData("LIST_GROUP", Util.listName[index]);
+            String titleName = etTitleName.getText().toString();
+            if (titleName.length() != 0) {
+                helper.insertListGroupData("LIST_GROUP", Util.listName[index], String.valueOf(index), titleName);
 //            helper.insertListData("TODO_LIST", Util.listName[index]);
-            Intent intent = new Intent(ListAddActivity.this, MainActivity.class);
-            intent.putExtra("INDEX", intent);
-            startActivity(intent);
+                Intent intent = new Intent(ListAddActivity.this, MainActivity.class);
+                intent.putExtra("INDEX", intent);
+                startActivity(intent);
+            } else {
+                Toast.makeText(ListAddActivity.this, "Title Check!", Toast.LENGTH_SHORT).show();
+            }
         }
     };
 

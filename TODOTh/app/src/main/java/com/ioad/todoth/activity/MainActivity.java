@@ -1,12 +1,15 @@
 package com.ioad.todoth.activity;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
+import android.graphics.Canvas;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -33,6 +36,8 @@ public class MainActivity extends AppCompatActivity {
     DBHelper helper;
     Cursor cursor;
     int index;
+    ItemTouchHelper touchHelper;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,10 +61,12 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+
     @Override
     protected void onResume() {
         super.onResume();
         showList();
+//        setUpRecyclerView();
     }
 
     private void showList() {
@@ -69,23 +76,25 @@ public class MainActivity extends AppCompatActivity {
             while (cursor.moveToNext()) {
                 String seq = String.valueOf(cursor.getInt(0));
                 String title = cursor.getString(1);
+                int index = Integer.parseInt(cursor.getString(2));
+                String titleName = cursor.getString(3);
                 Log.e(TAG, "seq " + seq);
                 Log.e(TAG, "title " + title);
-                list = new List(seq, title);
+                Log.e(TAG, "index " + index);
+                Log.e(TAG, "titleName " + titleName);
+                list = new List(seq, title, index, titleName);
                 lists.add(list);
 
             }
         } else {
-            list = new List(null, null);
-            lists.add(list);
+//            list = new List(null, null, 0);
+//            lists.add(list);
         }
 
         layoutManager = new LinearLayoutManager(mContext);
         rvList.setLayoutManager(layoutManager);
         adapter = new ListAdapter(mContext, R.layout.group_list_item, lists);
         rvList.setAdapter(adapter);
-
-
     }
 
 

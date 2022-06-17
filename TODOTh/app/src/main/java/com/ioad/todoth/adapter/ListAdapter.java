@@ -25,7 +25,6 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ViewHolder> {
 
     private Context mContext;
     private int layout = 0;
-    private LayoutInflater inflater;
     private ArrayList<List> lists;
 
     public ListAdapter(Context mContext, int layout, ArrayList<List> lists) {
@@ -44,10 +43,8 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ViewHolder> {
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        holder.ivListImg.setImageResource(Util.listImage[position]);
-        holder.tvListTitle.setText(lists.get(position).getTitle());
-//        holder.tvListCount.setText(lists.get(position).getCount());
-//        holder.tvListTotal.setText(lists.get(position).getTotal());
+        holder.ivListImg.setImageResource(Util.listImage[lists.get(position).getIndex()]);
+        holder.tvListTitle.setText(lists.get(position).getTitleName());
     }
 
     @Override
@@ -55,11 +52,13 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ViewHolder> {
         return lists.size();
     }
 
+
+
     public class ViewHolder extends RecyclerView.ViewHolder {
 
         public LinearLayout listItem;
         public ImageView ivListImg;
-        public TextView tvListTitle, tvListCount, tvListTotal;
+        public TextView tvListTitle;
 
 
         public ViewHolder(@NonNull View itemView) {
@@ -68,8 +67,6 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ViewHolder> {
             listItem = itemView.findViewById(R.id.ll_list_item);
             ivListImg = itemView.findViewById(R.id.iv_list_item_image);
             tvListTitle = itemView.findViewById(R.id.tv_list_title);
-//            tvListCount = itemView.findViewById(R.id.tv_list_count);
-//            tvListTotal = itemView.findViewById(R.id.tv_list_total);
 
             listItem.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -77,6 +74,7 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ViewHolder> {
 
                     Intent intent = new Intent(mContext, ListItemActivity.class);
                     intent.putExtra("LIST_NAME", lists.get(getAdapterPosition()).getTitle());
+                    intent.putExtra("TITLE_NAME", lists.get(getAdapterPosition()).getTitleName());
                     mContext.startActivity(intent);
                 }
             });

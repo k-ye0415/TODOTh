@@ -5,20 +5,20 @@ import com.ioad.todoth.R;
 public class Util {
 
     public static String[] listName = {
-            "데일리",
-            "일",
-            "여행",
-            "가계부",
-            "운동",
-            "공부"
+            "Daily",
+            "Work",
+            "Trip",
+            "Exercise",
+            "Study",
+            "etc."
     };
     public static int[] listImage = {
-            R.drawable.dog,
-            R.drawable.dog,
-            R.drawable.dog,
-            R.drawable.dog,
-            R.drawable.dog,
-            R.drawable.dog
+            R.drawable.daily_icon,
+            R.drawable.work_icon,
+            R.drawable.trip_icon,
+            R.drawable.exercise_icon,
+            R.drawable.study_icon,
+            R.drawable.etc_icon
     };
 
 }

@@ -20,32 +20,24 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.ioad.todoth.R;
-import com.ioad.todoth.activity.ListItemActivity;
 import com.ioad.todoth.bean.List;
 import com.ioad.todoth.common.ClickCallbackListener;
 import com.ioad.todoth.common.DBHelper;
-import com.ioad.todoth.common.ItemTouchHelperListener;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 
-public class ListItemAdapter extends RecyclerView.Adapter<ListItemAdapter.ViewHolder> implements ItemTouchHelperListener {
+public class ListItemAdapter extends RecyclerView.Adapter<ListItemAdapter.ViewHolder> {
 
     private final String TAG = getClass().getSimpleName();
 
     private Context mContext;
     private int layout = 0;
-    private LayoutInflater inflater;
     private ArrayList<List> lists;
 
     private DBHelper helper;
 
     private ClickCallbackListener callbackListener;
     private ArrayList<String> numbers;
-    private Dialog dialog;
-    EditText etItem;
-    Button btnAddCancel, btnAdd;
-    int index;
 
 
     public ListItemAdapter(Context mContext, int layout, ArrayList<List> lists, ClickCallbackListener listener) {
@@ -122,57 +114,6 @@ public class ListItemAdapter extends RecyclerView.Adapter<ListItemAdapter.ViewHo
         return lists.size();
     }
 
-    @Override
-    public boolean onItemMove(int startPosition, int endPosition) {
-        String number = lists.get(startPosition).getSeq();
-        lists.remove(endPosition);
-//        lists.add(startPosition , number);
-
-        notifyItemMoved(startPosition,endPosition);
-        return true;
-    }
-
-    @Override
-    public void onItemSwipe(int position) {
-        String number = lists.get(position).getSeq();
-
-        lists.remove(position);
-
-        notifyItemRemoved(position);
-    }
-
-    @Override
-    public void onLeftClick(int position, RecyclerView.ViewHolder viewHolder) {
-        dialog = new Dialog(mContext);
-        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        dialog.setContentView(R.layout.dialog_layout);
-
-        WindowManager.LayoutParams layoutParams = new WindowManager.LayoutParams();
-        layoutParams.copyFrom(dialog.getWindow().getAttributes());
-        layoutParams.width = WindowManager.LayoutParams.MATCH_PARENT;
-        layoutParams.height = WindowManager.LayoutParams.WRAP_CONTENT;
-
-        Window window = dialog.getWindow();
-        window.setAttributes(layoutParams);
-        dialog.show();
-
-        etItem = dialog.findViewById(R.id.et_item);
-        btnAddCancel = dialog.findViewById(R.id.btn_item_add_cancel);
-        btnAdd = dialog.findViewById(R.id.btn_item_add);
-
-        etItem.setText(lists.get(position).getContent());
-
-        index = Integer.parseInt(lists.get(position).getSeq());
-        btnAddCancel.setOnClickListener(dialogBtnOnClickListener);
-        btnAdd.setOnClickListener(dialogBtnOnClickListener);
-    }
-
-    @Override
-    public void onRightClick(int position, RecyclerView.ViewHolder viewHolder) {
-        lists.remove(position);
-        notifyItemChanged(position);
-    }
-
     public class ViewHolder extends RecyclerView.ViewHolder {
 
         public CheckBox cbCheck;
@@ -187,23 +128,4 @@ public class ListItemAdapter extends RecyclerView.Adapter<ListItemAdapter.ViewHo
         }
     }
 
-    View.OnClickListener dialogBtnOnClickListener = new View.OnClickListener() {
-        @Override
-        public void onClick(View view) {
-            switch (view.getId()) {
-                case R.id.btn_item_add_cancel:
-                    dialog.dismiss();
-                    break;
-                case R.id.btn_item_add:
-                    String content = etItem.getText().toString();
-                    if (content.length() != 0) {
-                        helper.updateListItemData("TODO_LIST", index, content);
-                        dialog.dismiss();
-                    } else {
-                        Toast.makeText(mContext, "Writ TODO", Toast.LENGTH_SHORT).show();
-                    }
-                    break;
-            }
-        }
-    };
 }
