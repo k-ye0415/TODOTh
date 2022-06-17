@@ -36,6 +36,7 @@ public class ListSearchActivity extends AppCompatActivity {
     ArrayList<List> lists;
     List list;
     String search;
+    boolean cbIsCheck;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,6 +60,7 @@ public class ListSearchActivity extends AppCompatActivity {
         @Override
         public void onCheckedChanged(CompoundButton compoundButton, boolean isCheck) {
             if (isCheck) {
+                cbIsCheck = true;
                 if (search.length() != 0) {
                     getNoFinishSearchList();
                 }
@@ -82,29 +84,32 @@ public class ListSearchActivity extends AppCompatActivity {
     };
 
     private void getSearchList() {
-        cursor = helper.selectSearchData(search);
-        lists.clear();
-
-        if (cursor.getCount() != 0) {
-            while (cursor.moveToNext()) {
-                String seq = String.valueOf(cursor.getInt(0));
-                String title = cursor.getString(1);
-                String content = cursor.getString(2);
-
-                list = new List(seq, title, content);
-                lists.add(list);
-            }
-
-
-            layoutManager = new LinearLayoutManager(ListSearchActivity.this);
-            rvSearchList.setLayoutManager(layoutManager);
-            adapter = new ListSearchAdapter(ListSearchActivity.this, R.layout.search_list_item, lists);
-            rvSearchList.setAdapter(adapter);
-
+        if (cbIsCheck) {
+            getNoFinishSearchList();
         } else {
-            Toast.makeText(ListSearchActivity.this, "검색 내용이 없습니다", Toast.LENGTH_SHORT).show();
-        }
+            cursor = helper.selectSearchData(search);
+            lists.clear();
 
+            if (cursor.getCount() != 0) {
+                while (cursor.moveToNext()) {
+                    String seq = String.valueOf(cursor.getInt(0));
+                    String title = cursor.getString(1);
+                    String content = cursor.getString(2);
+
+                    list = new List(seq, title, content);
+                    lists.add(list);
+                }
+
+
+                layoutManager = new LinearLayoutManager(ListSearchActivity.this);
+                rvSearchList.setLayoutManager(layoutManager);
+                adapter = new ListSearchAdapter(ListSearchActivity.this, R.layout.search_list_item, lists);
+                rvSearchList.setAdapter(adapter);
+
+            } else {
+                Toast.makeText(ListSearchActivity.this, "검색 내용이 없습니다", Toast.LENGTH_SHORT).show();
+            }
+        }
     }
 
     private void getNoFinishSearchList() {
