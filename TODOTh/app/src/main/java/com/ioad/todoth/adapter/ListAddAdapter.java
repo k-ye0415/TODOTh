@@ -36,13 +36,14 @@ public class ListAddAdapter extends RecyclerView.Adapter<ListAddAdapter.ViewHold
     private boolean isClick = true;
     private int titleIndex = 0;
     private SparseBooleanArray mSelectedItems = new SparseBooleanArray(0);
-    private String[] selectItem = new String[1];
+    private String status;
 
     public ListAddAdapter(Context mContext, int layout, ArrayList<Item> items, ClickCallbackListener listener) {
         this.mContext = mContext;
         this.layout = layout;
         this.items = items;
         this.callbackListener = listener;
+        this.status = "insert";
     }
 
     public ListAddAdapter(Context mContext, int layout, ArrayList<Item> items, ClickCallbackListener listener, int index) {
@@ -51,6 +52,7 @@ public class ListAddAdapter extends RecyclerView.Adapter<ListAddAdapter.ViewHold
         this.items = items;
         this.callbackListener = listener;
         this.titleIndex = index;
+        this.status = "update";
         Log.e(TAG, "index " + titleIndex);
     }
 
@@ -65,10 +67,7 @@ public class ListAddAdapter extends RecyclerView.Adapter<ListAddAdapter.ViewHold
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        if (titleIndex != 0) {
-            updateItemSelected(titleIndex);
-//            toggleItemSelected(position);
-        }
+        Log.e(TAG, "onBindViewHolder");
         holder.ivItemImage.setImageResource(items.get(position).getImage());
         holder.tvItemText.setText(items.get(position).getName());
 
@@ -94,6 +93,14 @@ public class ListAddAdapter extends RecyclerView.Adapter<ListAddAdapter.ViewHold
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
+            Log.e(TAG, "ViewHolder");
+
+            if (titleIndex != 0) {
+                updateItemSelected(titleIndex);
+//            toggleItemSelected(position);
+                temp = titleIndex;
+
+            }
             cvLayout = itemView.findViewById(R.id.cv_layout);
             ivItemImage = itemView.findViewById(R.id.iv_list_add_item_image);
             tvItemText = itemView.findViewById(R.id.tv_list_item_text);
@@ -104,12 +111,14 @@ public class ListAddAdapter extends RecyclerView.Adapter<ListAddAdapter.ViewHold
                 public void onClick(View view) {
                     int position = getAdapterPosition();
 
+
                     if (mSelectedItems.size() >= 1) {
 //                        mSelectedItems.delete(temp);
                         mSelectedItems.clear();
-                        mSelectedItems.put(position, false);
+//                        mSelectedItems.put(position, false);
+                        toggleItemSelected(position);
                         notifyItemChanged(temp);
-//                        temp = 0;
+                        temp = position;
                     } else {
                         temp = position;
                     }
@@ -122,7 +131,7 @@ public class ListAddAdapter extends RecyclerView.Adapter<ListAddAdapter.ViewHold
                         toggleItemSelected(position);
                     }
 
-                    callbackListener.callBack(position);
+                    callbackListener.callBack(position, status);
                 }
             });
 
@@ -133,13 +142,9 @@ public class ListAddAdapter extends RecyclerView.Adapter<ListAddAdapter.ViewHold
     private void toggleItemSelected(int position) {
         if (mSelectedItems.get(position, false) == true) {
             mSelectedItems.delete(position);
-//            selectItem[0] = null;
-            Log.e(TAG, "TRUE " + mSelectedItems.size());
             notifyItemChanged(position);
         } else {
             mSelectedItems.put(position, true);
-            Log.e(TAG, "FALSE " + mSelectedItems.size());
-//            selectItem[0] = String.valueOf(position);
             notifyItemChanged(position);
         }
     }
@@ -149,7 +154,6 @@ public class ListAddAdapter extends RecyclerView.Adapter<ListAddAdapter.ViewHold
     }
 
     private void updateItemSelected(int position) {
-//        selectItem[0] = String.valueOf(position);
         mSelectedItems.put(position, true);
     }
 

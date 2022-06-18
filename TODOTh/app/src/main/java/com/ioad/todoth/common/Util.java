@@ -4,7 +4,7 @@ import com.ioad.todoth.R;
 
 public class Util {
 
-    public static String[] listName = {
+    public static String[] listType = {
             "Daily",
             "Work",
             "Trip",

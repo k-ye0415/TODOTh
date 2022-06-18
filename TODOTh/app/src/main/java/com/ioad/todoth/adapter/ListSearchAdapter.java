@@ -70,7 +70,7 @@ public class ListSearchAdapter extends RecyclerView.Adapter<ListSearchAdapter.Vi
                 public void onClick(View view) {
                     int position = getAdapterPosition();
                     Intent intent = new Intent(mContext, ListItemActivity.class);
-                    intent.putExtra("LIST_NAME",lists.get(position).getTitle());
+                    intent.putExtra("LIST_TYPE",lists.get(position).getTitle());
                     mContext.startActivity(intent);
                 }
             });

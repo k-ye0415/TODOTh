@@ -44,8 +44,8 @@ public class ListItemActivity extends AppCompatActivity {
     EditText etItem;
     Button btnAddCancel, btnAdd;
 
-    String title, titleName;
-    int titleIndex;
+    String type, titleName;
+    int groupIndex, titleIndex;
 
     Dialog dialog;
     DBHelper helper;
@@ -70,7 +70,8 @@ public class ListItemActivity extends AppCompatActivity {
         seqs = new ArrayList<>();
 
         Intent intent = getIntent();
-        title = intent.getStringExtra("LIST_NAME");
+        groupIndex = Integer.parseInt(intent.getStringExtra("GROUP_INDEX"));
+        type = intent.getStringExtra("LIST_TYPE");
         titleName = intent.getStringExtra("TITLE_NAME");
         titleIndex = intent.getIntExtra("LIST_INDEX", 0);
 
@@ -89,7 +90,7 @@ public class ListItemActivity extends AppCompatActivity {
     }
 
     private void getList() {
-        cursor = helper.selectListData("TODO_LIST", title);
+        cursor = helper.selectListData("TODO_LIST", type);
         lists.clear();
         if (cursor.getCount() != 0) {
             while (cursor.moveToNext()) {
@@ -115,7 +116,7 @@ public class ListItemActivity extends AppCompatActivity {
 
             listener = new ClickCallbackListener() {
                 @Override
-                public void callBack(int position) {
+                public void callBack(int position, String status) {
 
                 }
 
@@ -162,6 +163,7 @@ public class ListItemActivity extends AppCompatActivity {
                     break;
                 case R.id.btn_update_title_name:
                     Intent intent = new Intent(ListItemActivity.this, ListAddActivity.class);
+                    intent.putExtra("GROUP_INDEX", groupIndex);
                     intent.putExtra("TITLE_NAME", titleName);
                     intent.putExtra("UPDATE_TITLE", true);
                     intent.putExtra("LIST_INDEX", titleIndex);
@@ -182,7 +184,7 @@ public class ListItemActivity extends AppCompatActivity {
                 case R.id.btn_item_add:
                     String content = etItem.getText().toString();
                     if (content.length() != 0) {
-                        helper.insertListData("TODO_LIST", title, content);
+                        helper.insertListData("TODO_LIST", type, content);
                         dialog.dismiss();
                         onResume();
                     } else {

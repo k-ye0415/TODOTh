@@ -37,10 +37,11 @@ public class ListAddActivity extends AppCompatActivity {
     private GridLayoutManager gridLayoutManager;
     private DBHelper helper;
     private int index;
+    private String status;
     ClickCallbackListener listener;
     private String titleName;
     private boolean isUpdate;
-    private int titleIndex;
+    private int groupIndex, titleIndex;
 
 
     @Override
@@ -57,6 +58,7 @@ public class ListAddActivity extends AppCompatActivity {
 
         Intent intent = getIntent();
         if (intent != null) {
+            groupIndex = intent.getIntExtra("GROUP_INDEX", 0);
             titleName = intent.getStringExtra("TITLE_NAME");
             isUpdate = intent.getBooleanExtra("UPDATE_TITLE", false);
             titleIndex = intent.getIntExtra("LIST_INDEX", 0);
@@ -78,17 +80,18 @@ public class ListAddActivity extends AppCompatActivity {
         items = new ArrayList<>();
 
 
-        for (int i = 0; i < Util.listName.length; i++) {
-            item = new Item(Util.listName[i], Util.listImage[i]);
+        for (int i = 0; i < Util.listType.length; i++) {
+            item = new Item(Util.listType[i], Util.listImage[i]);
             items.add(item);
         }
 
 
         listener = new ClickCallbackListener() {
             @Override
-            public void callBack(int position) {
-                Log.e(TAG, "position :: " + position);
+            public void callBack(int position, String status) {
+                Log.d(TAG, "position :: " + position);
                 index = position;
+                status = status;
             }
 
             @Override
@@ -113,14 +116,26 @@ public class ListAddActivity extends AppCompatActivity {
         @Override
         public void onClick(View view) {
             titleName = etTitleName.getText().toString();
-            if (titleName.length() != 0) {
-                helper.insertListGroupData("LIST_GROUP", Util.listName[index], String.valueOf(index), titleName);
+            if(titleIndex == 0) {
+                if (titleName.length() != 0) {
+                    helper.insertListGroupData("LIST_GROUP", Util.listType[index], String.valueOf(index), titleName);
 //            helper.insertListData("TODO_LIST", Util.listName[index]);
-                Intent intent = new Intent(ListAddActivity.this, MainActivity.class);
-                intent.putExtra("CALLBACK_INDEX", index);
-                startActivity(intent);
+                    Intent intent = new Intent(ListAddActivity.this, MainActivity.class);
+                    intent.putExtra("CALLBACK_INDEX", index);
+                    startActivity(intent);
+                } else {
+                    Toast.makeText(ListAddActivity.this, "Title Check!", Toast.LENGTH_SHORT).show();
+                }
             } else {
-                Toast.makeText(ListAddActivity.this, "Title Check!", Toast.LENGTH_SHORT).show();
+                if (titleName.length() != 0) {
+                    helper.updateListGroupData("LIST_GROUP", Util.listType[index], String.valueOf(index), titleName, groupIndex);
+                    Intent intent = new Intent(ListAddActivity.this, ListItemActivity.class);
+                    intent.putExtra("GROUP_INDEX", groupIndex);
+                    intent.putExtra("LIST_TYPE", Util.listType[index]);
+                    intent.putExtra("TITLE_NAME", titleName);
+                    intent.putExtra("LIST_INDEX", intent);
+                    startActivity(intent);
+                }
             }
         }
     };
