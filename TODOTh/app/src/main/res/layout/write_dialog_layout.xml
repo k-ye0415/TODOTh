@@ -15,7 +15,10 @@
         android:id="@+id/et_content"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="your TODO" />
+        android:hint="your TODO"
+        android:layout_marginTop="20dp"
+        android:layout_marginBottom="20dp"
+        />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -27,13 +30,17 @@
             android:layout_width="0px"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="CANCEL" />
+            android:text="CANCEL"
+            android:layout_marginRight="10dp"
+            />
         <Button
             android:id="@+id/btn_item_add"
             android:layout_width="0px"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="OK" />
+            android:text="OK"
+            android:layout_marginLeft="10dp"
+            />
     </LinearLayout>
 
 </LinearLayout>

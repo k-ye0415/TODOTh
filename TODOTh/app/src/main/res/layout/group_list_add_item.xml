@@ -13,7 +13,7 @@
     android:layout_margin="8dp"
     app:cardCornerRadius="8dp"
     app:cardElevation="8dp"
-    android:backgroundTint="#8BC34A"
+    android:backgroundTint="@color/point"
     >
 
     <LinearLayout
@@ -30,6 +30,7 @@
             android:id="@+id/iv_group_image"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:src="@drawable/delete_icon"
              />
         <TextView
             android:id="@+id/tv_list_group_name"
@@ -37,6 +38,8 @@
             android:layout_height="wrap_content"
             android:text="text"
             android:gravity="center"
+            android:textColor="@color/base"
+            android:layout_marginTop="10dp"
             />
     </LinearLayout>
 </androidx.cardview.widget.CardView>

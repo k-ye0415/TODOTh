@@ -11,6 +11,7 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.ioad.todoth.R;
@@ -25,7 +26,7 @@ public class ListSearchActivity extends AppCompatActivity {
     private final String TAG = getClass().getSimpleName();
 
     EditText etSearch;
-    Button btnSearch;
+    ImageView btnSearch;
     CheckBox checkBox;
     RecyclerView rvSearchList;
     RecyclerView.Adapter adapter;

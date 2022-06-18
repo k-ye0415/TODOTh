@@ -5,12 +5,13 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:padding="20dp"
     tools:context=".activity.ListItemActivity">
 
     <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:padding="20dp"
+        >
 
         <TextView
             android:id="@+id/tv_list_group_name"
@@ -28,34 +29,54 @@
             android:gravity="right"
             android:orientation="horizontal">
 
-            <Button
+            <ImageView
                 android:id="@+id/btn_update_list_group"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:src="@drawable/update_icon"
+                android:maxHeight="40dp"
+                android:maxWidth="40dp"
+                android:adjustViewBounds="true"
+                android:layout_marginRight="15dp"
+                />
 
-            <Button
+            <ImageView
                 android:id="@+id/btn_delete_list_group"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:src="@drawable/delete_icon"
+                android:maxHeight="40dp"
+                android:maxWidth="40dp"
+                android:adjustViewBounds="true"
+                />
 
         </LinearLayout>
     </FrameLayout>
-
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:background="@color/point"
+        />
     <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:padding="20dp">
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rv_list"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
 
-        <Button
+        <ImageView
             android:id="@+id/btn_list_item_add"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="bottom|right"
-            android:layout_margin="15dp" />
+            android:layout_margin="15dp"
+            android:src="@drawable/plus_icon"
+            android:maxHeight="60dp"
+            android:maxWidth="60dp"
+            android:adjustViewBounds="true"/>
     </FrameLayout>
 
 </LinearLayout>
