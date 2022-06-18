@@ -130,9 +130,9 @@ public class DBHelper extends SQLiteOpenHelper {
         db.execSQL(updateQuery);
     }
 
-    public void updateListItemData(String tableName, int index, String content) {
+    public void updateListItemData(int index, String content) {
         db = this.getWritableDatabase();
-        String updateQuery = "UPDATE " + tableName +
+        String updateQuery = "UPDATE " + LIST_TABLE_NAME +
                 " SET CONTENT = '" + content + "', " +
                 "UPDATE_DATE = '" + getTime() + "' " +
                 "WHERE INDEX_NUM = " + index + ";";
@@ -164,6 +164,15 @@ public class DBHelper extends SQLiteOpenHelper {
     public void deleteListGroupData(int listSeq) {
         db = this.getWritableDatabase();
         String deleteQuery = "UPDATE LIST_GROUP " +
+                "SET DELETE_DATE = '" + getTime() + "' " +
+                "WHERE INDEX_NUM = " + listSeq;
+        Log.e(TAG, deleteQuery);
+        db.execSQL(deleteQuery);
+    }
+
+    public void deleteListData(int listSeq) {
+        db = this.getWritableDatabase();
+        String deleteQuery = "UPDATE " + LIST_TABLE_NAME + " " +
                 "SET DELETE_DATE = '" + getTime() + "' " +
                 "WHERE INDEX_NUM = " + listSeq;
         Log.e(TAG, deleteQuery);

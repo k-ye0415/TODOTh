@@ -1,7 +1,9 @@
 package com.ioad.todoth.adapter;
 
+import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Paint;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -21,6 +23,8 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.ioad.todoth.R;
+import com.ioad.todoth.activity.ListItemActivity;
+import com.ioad.todoth.activity.MainActivity;
 import com.ioad.todoth.bean.List;
 import com.ioad.todoth.common.ClickCallbackListener;
 import com.ioad.todoth.common.DBHelper;
@@ -39,6 +43,16 @@ public class ListItemAdapter extends RecyclerView.Adapter<ListItemAdapter.ViewHo
 
     private ClickCallbackListener callbackListener;
     private ArrayList<String> numbers;
+    Dialog dialog;
+    WindowManager.LayoutParams layoutParams;
+    Window window;
+    // write dialog
+    EditText etItem;
+    Button btnAddCancel, btnAdd;
+
+    // delete dialog
+    Button btnDeleteCancel, btnDelete;
+    int selectIndex;
 
 
     public ListItemAdapter(Context mContext, int layout, ArrayList<List> lists, ClickCallbackListener listener) {
@@ -128,7 +142,97 @@ public class ListItemAdapter extends RecyclerView.Adapter<ListItemAdapter.ViewHo
             llList = itemView.findViewById(R.id.ll_list_item);
             cbCheck = itemView.findViewById(R.id.cb_check);
             tvContent = itemView.findViewById(R.id.tv_list_content);
+
+            llList.setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View view) {
+                    Log.e(TAG, "This is Long Click");
+                    selectIndex = Integer.parseInt(lists.get(getAdapterPosition()).getSeq());
+                    dialog = new Dialog(mContext);
+                    dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+                    dialog.setContentView(R.layout.delete_dialog_layout);
+
+                    layoutParams = new WindowManager.LayoutParams();
+                    layoutParams.copyFrom(dialog.getWindow().getAttributes());
+                    layoutParams.width = WindowManager.LayoutParams.MATCH_PARENT;
+                    layoutParams.height = WindowManager.LayoutParams.WRAP_CONTENT;
+
+                    window = dialog.getWindow();
+                    window.setAttributes(layoutParams);
+                    dialog.show();
+
+                    btnDeleteCancel = dialog.findViewById(R.id.btn_group_delete_cancel);
+                    btnDelete = dialog.findViewById(R.id.btn_group_delete);
+
+                    btnDeleteCancel.setOnClickListener(dialogBtnOnClickListener);
+                    btnDelete.setOnClickListener(dialogBtnOnClickListener);
+                    return true;
+                }
+            });
+
+            llList.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Log.e(TAG, "This is Click");
+                    selectIndex = Integer.parseInt(lists.get(getAdapterPosition()).getSeq());
+                    dialog = new Dialog(mContext);
+                    dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+                    dialog.setContentView(R.layout.write_dialog_layout);
+
+                    layoutParams = new WindowManager.LayoutParams();
+                    layoutParams.copyFrom(dialog.getWindow().getAttributes());
+                    layoutParams.width = WindowManager.LayoutParams.MATCH_PARENT;
+                    layoutParams.height = WindowManager.LayoutParams.WRAP_CONTENT;
+
+                    window = dialog.getWindow();
+                    window.setAttributes(layoutParams);
+                    dialog.show();
+
+                    etItem = dialog.findViewById(R.id.et_content);
+                    btnAddCancel = dialog.findViewById(R.id.btn_item_add_cancel);
+                    btnAdd = dialog.findViewById(R.id.btn_item_add);
+
+                    etItem.setText(lists.get(getAdapterPosition()).getContent());
+                    btnAddCancel.setOnClickListener(dialogBtnOnClickListener);
+                    btnAdd.setOnClickListener(dialogBtnOnClickListener);
+                }
+            });
+
         }
     }
+
+    View.OnClickListener dialogBtnOnClickListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View view) {
+            Intent intent = ((Activity) mContext).getIntent();
+            switch (view.getId()) {
+                case R.id.btn_item_add_cancel:
+                case R.id.btn_group_delete_cancel:
+                    dialog.dismiss();
+                    break;
+                case R.id.btn_item_add:
+                    String content = etItem.getText().toString();
+                    if (content.length() != 0) {
+                        helper.updateListItemData(selectIndex, content);
+                        dialog.dismiss();
+                        ((Activity) mContext).finish(); //현재 액티비티 종료 실시
+                        ((Activity) mContext).overridePendingTransition(0, 0); //효과 없애기
+                        ((Activity) mContext).startActivity(intent); //현재 액티비티 재실행 실시
+                        ((Activity) mContext).overridePendingTransition(0, 0); //효과 없애기
+                    } else {
+                        Toast.makeText(mContext, "Writ TODO", Toast.LENGTH_SHORT).show();
+                    }
+                    break;
+                case R.id.btn_group_delete:
+                    helper.deleteListData(selectIndex);
+                    dialog.dismiss();
+                    ((Activity) mContext).finish(); //현재 액티비티 종료 실시
+                    ((Activity) mContext).overridePendingTransition(0, 0); //효과 없애기
+                    ((Activity) mContext).startActivity(intent); //현재 액티비티 재실행 실시
+                    ((Activity) mContext).overridePendingTransition(0, 0); //효과 없애기
+                    break;
+            }
+        }
+    };
 
 }

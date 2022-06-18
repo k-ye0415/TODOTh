@@ -38,6 +38,9 @@ public class ListItemActivity extends AppCompatActivity {
     ArrayList<List> lists;
     List list;
 
+    Dialog dialog;
+    WindowManager.LayoutParams layoutParams;
+    Window window;
     // write dialog
     EditText etItem;
     Button btnAddCancel, btnAdd;
@@ -48,7 +51,6 @@ public class ListItemActivity extends AppCompatActivity {
     String type, titleName;
     int listSeq, typeIndex;
 
-    Dialog dialog;
     DBHelper helper;
     Cursor cursor;
 
@@ -153,8 +155,7 @@ public class ListItemActivity extends AppCompatActivity {
     View.OnClickListener btnOnClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View view) {
-            WindowManager.LayoutParams layoutParams;
-            Window window;
+
             switch (view.getId()) {
                 case R.id.btn_list_item_add:
                     dialog = new Dialog(ListItemActivity.this);
