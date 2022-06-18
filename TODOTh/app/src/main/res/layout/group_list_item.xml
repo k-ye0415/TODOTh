@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
+    android:orientation="vertical"
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="?attr/selectableItemBackground">
@@ -13,7 +15,12 @@
         <ImageView
             android:id="@+id/iv_list_group_image"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:src="@drawable/plus_icon"
+            android:maxHeight="60dp"
+            android:maxWidth="60dp"
+            android:adjustViewBounds="true"
+            />
 
         <LinearLayout
             android:layout_width="wrap_content"
@@ -26,8 +33,18 @@
                 android:id="@+id/tv_list_group_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="title" />
+                android:text="title"
+                android:layout_marginLeft="20dp"
+                android:textSize="20dp"
+                />
         </LinearLayout>
     </LinearLayout>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:background="@color/point"
+        android:layout_marginTop="15dp"
+        android:layout_marginBottom="15dp"
+        />
 
 </LinearLayout>

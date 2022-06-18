@@ -22,10 +22,14 @@
         android:layout_height="wrap_content"
         android:layout_weight="1"
         />
-        <Button
+        <ImageView
             android:id="@+id/btn_search_list"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:src="@drawable/search_icon"
+            android:maxHeight="40dp"
+            android:maxWidth="40dp"
+            android:adjustViewBounds="true"
             />
     </LinearLayout>
     <CheckBox

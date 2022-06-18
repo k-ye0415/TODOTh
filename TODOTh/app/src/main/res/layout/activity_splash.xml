@@ -5,11 +5,17 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".activity.SplashActivity">
+    tools:context=".activity.SplashActivity"
+    android:background="@color/point">
 
-    <View
+    <ImageView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@color/white"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:src="@drawable/splash_icon"
+        android:maxHeight="150dp"
+        android:maxWidth="150dp"
+        android:adjustViewBounds="true"
         />
 </LinearLayout>
