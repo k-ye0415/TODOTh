@@ -24,7 +24,7 @@
             android:orientation="horizontal">
 
             <ImageButton
-                android:id="@+id/btn_search"
+                android:id="@+id/btn_go_search"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:src="@android:drawable/ic_menu_search" />
@@ -54,7 +54,7 @@
             android:layout_height="wrap_content">
 
             <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/rv_list"
+                android:id="@+id/rv_list_group"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
 

@@ -12,7 +12,7 @@
         android:text="TODO" />
 
     <EditText
-        android:id="@+id/et_item"
+        android:id="@+id/et_content"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="your TODO" />

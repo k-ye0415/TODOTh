@@ -65,9 +65,9 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ViewHolder> {
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
 
-            listItem = itemView.findViewById(R.id.ll_list_item);
-            ivListImg = itemView.findViewById(R.id.iv_list_item_image);
-            tvListTitle = itemView.findViewById(R.id.tv_list_title);
+            listItem = itemView.findViewById(R.id.ll_list_group_item);
+            ivListImg = itemView.findViewById(R.id.iv_list_group_image);
+            tvListTitle = itemView.findViewById(R.id.tv_list_group_title);
 
             listItem.setOnClickListener(new View.OnClickListener() {
                 @Override

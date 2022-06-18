@@ -61,10 +61,10 @@ public class ListItemActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_list_item);
 
-        tvItemTitle = findViewById(R.id.tv_list_item_title);
-        rvListItem = findViewById(R.id.rv_list_item);
+        tvItemTitle = findViewById(R.id.tv_list_group_name);
+        rvListItem = findViewById(R.id.rv_list);
         btnItemAdd = findViewById(R.id.btn_list_item_add);
-        btnTitleUpdate = findViewById(R.id.btn_update_title_name);
+        btnTitleUpdate = findViewById(R.id.btn_update_list_group);
         btnGroupDelete = findViewById(R.id.btn_delete_list_group);
 
         helper = new DBHelper(ListItemActivity.this);
@@ -170,14 +170,14 @@ public class ListItemActivity extends AppCompatActivity {
                     window.setAttributes(layoutParams);
                     dialog.show();
 
-                    etItem = dialog.findViewById(R.id.et_item);
+                    etItem = dialog.findViewById(R.id.et_content);
                     btnAddCancel = dialog.findViewById(R.id.btn_item_add_cancel);
                     btnAdd = dialog.findViewById(R.id.btn_item_add);
 
                     btnAddCancel.setOnClickListener(dialogBtnOnClickListener);
                     btnAdd.setOnClickListener(dialogBtnOnClickListener);
                     break;
-                case R.id.btn_update_title_name:
+                case R.id.btn_update_list_group:
                     Intent intent = new Intent(ListItemActivity.this, ListAddActivity.class);
                     intent.putExtra("LIST_SEQ", listSeq);
                     intent.putExtra("LIST_TYPE", type);

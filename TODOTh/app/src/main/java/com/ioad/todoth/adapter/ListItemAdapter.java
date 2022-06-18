@@ -13,6 +13,7 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -116,6 +117,7 @@ public class ListItemAdapter extends RecyclerView.Adapter<ListItemAdapter.ViewHo
 
     public class ViewHolder extends RecyclerView.ViewHolder {
 
+        public LinearLayout llList;
         public CheckBox cbCheck;
         public TextView tvContent;
 
@@ -123,6 +125,7 @@ public class ListItemAdapter extends RecyclerView.Adapter<ListItemAdapter.ViewHo
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
 
+            llList = itemView.findViewById(R.id.ll_list_item);
             cbCheck = itemView.findViewById(R.id.cb_check);
             tvContent = itemView.findViewById(R.id.tv_list_content);
         }

@@ -48,9 +48,9 @@ public class ListAddActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_list_add);
 
-        etTitleName = findViewById(R.id.et_title);
-        rvListAdd = findViewById(R.id.rv_add_list);
-        btnListAdd = findViewById(R.id.btn_list_add);
+        etTitleName = findViewById(R.id.et_title_name);
+        rvListAdd = findViewById(R.id.rv_add_list_group);
+        btnListAdd = findViewById(R.id.btn_list_group);
         helper = new DBHelper(ListAddActivity.this);
         gridLayoutManager = new GridLayoutManager(ListAddActivity.this, 2);
         rvListAdd.setLayoutManager(gridLayoutManager);

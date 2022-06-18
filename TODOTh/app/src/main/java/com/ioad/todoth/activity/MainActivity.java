@@ -43,9 +43,9 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         mContext = MainActivity.this;
-        btnSearch = findViewById(R.id.btn_search);
+        btnSearch = findViewById(R.id.btn_go_search);
         btnListAdd = findViewById(R.id.btn_list_group_add);
-        rvList = findViewById(R.id.rv_list);
+        rvList = findViewById(R.id.rv_list_group);
 
         lists = new ArrayList<>();
         helper = new DBHelper(mContext);
@@ -94,7 +94,7 @@ public class MainActivity extends AppCompatActivity {
         public void onClick(View view) {
             Intent intent = null;
             switch (view.getId()) {
-                case R.id.btn_search:
+                case R.id.btn_go_search:
                     intent = new Intent(mContext, ListSearchActivity.class);
                     startActivity(intent);
                     break;

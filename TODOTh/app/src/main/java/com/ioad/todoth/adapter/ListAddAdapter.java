@@ -98,9 +98,9 @@ public class ListAddAdapter extends RecyclerView.Adapter<ListAddAdapter.ViewHold
                 temp = typeIndex;
                 status = "";
             }
-            cvLayout = itemView.findViewById(R.id.cv_layout);
-            ivItemImage = itemView.findViewById(R.id.iv_list_add_item_image);
-            tvItemText = itemView.findViewById(R.id.tv_list_item_text);
+            cvLayout = itemView.findViewById(R.id.cv_list_group);
+            ivItemImage = itemView.findViewById(R.id.iv_group_image);
+            tvItemText = itemView.findViewById(R.id.tv_list_group_name);
 
 
             ivItemImage.setOnClickListener(new View.OnClickListener() {
