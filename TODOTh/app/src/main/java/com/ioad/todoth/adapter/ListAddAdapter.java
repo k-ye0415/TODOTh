@@ -34,7 +34,7 @@ public class ListAddAdapter extends RecyclerView.Adapter<ListAddAdapter.ViewHold
     private ArrayList<Item> items;
     private ClickCallbackListener callbackListener;
     private boolean isClick = true;
-    private int titleIndex = 0;
+    private int typeIndex;
     private SparseBooleanArray mSelectedItems = new SparseBooleanArray(0);
     private String status;
 
@@ -46,14 +46,14 @@ public class ListAddAdapter extends RecyclerView.Adapter<ListAddAdapter.ViewHold
         this.status = "insert";
     }
 
-    public ListAddAdapter(Context mContext, int layout, ArrayList<Item> items, ClickCallbackListener listener, int index) {
+    public ListAddAdapter(Context mContext, int layout, ArrayList<Item> items, ClickCallbackListener listener, int typeIndex) {
         this.mContext = mContext;
         this.layout = layout;
         this.items = items;
         this.callbackListener = listener;
-        this.titleIndex = index;
+        this.typeIndex = typeIndex;
         this.status = "update";
-        Log.e(TAG, "index " + titleIndex);
+        Log.e(TAG, "index " + typeIndex);
     }
 
     @NonNull
@@ -67,7 +67,6 @@ public class ListAddAdapter extends RecyclerView.Adapter<ListAddAdapter.ViewHold
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        Log.e(TAG, "onBindViewHolder");
         holder.ivItemImage.setImageResource(items.get(position).getImage());
         holder.tvItemText.setText(items.get(position).getName());
 
@@ -93,13 +92,11 @@ public class ListAddAdapter extends RecyclerView.Adapter<ListAddAdapter.ViewHold
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
-            Log.e(TAG, "ViewHolder");
 
-            if (titleIndex != 0) {
-                updateItemSelected(titleIndex);
-//            toggleItemSelected(position);
-                temp = titleIndex;
-
+            if (status.equals("update")) {
+                updateItemSelected(typeIndex);
+                temp = typeIndex;
+                status = "";
             }
             cvLayout = itemView.findViewById(R.id.cv_layout);
             ivItemImage = itemView.findViewById(R.id.iv_list_add_item_image);
@@ -113,9 +110,7 @@ public class ListAddAdapter extends RecyclerView.Adapter<ListAddAdapter.ViewHold
 
 
                     if (mSelectedItems.size() >= 1) {
-//                        mSelectedItems.delete(temp);
                         mSelectedItems.clear();
-//                        mSelectedItems.put(position, false);
                         toggleItemSelected(position);
                         notifyItemChanged(temp);
                         temp = position;
@@ -123,10 +118,11 @@ public class ListAddAdapter extends RecyclerView.Adapter<ListAddAdapter.ViewHold
                         temp = position;
                     }
 
-                    if (titleIndex != 0) {
-                        position = titleIndex;
-                        titleIndex = 0;
+                    if (status.equals("update")) {
+                        position = typeIndex;
+                        typeIndex = 0;
                         toggleItemSelected(position);
+                        status = "";
                     } else {
                         toggleItemSelected(position);
                     }

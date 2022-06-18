@@ -4,7 +4,8 @@ import java.util.Map;
 
 public class List {
     String seq;
-    String title;
+    String type;
+    String titleName;
     String content;
     String date;
     String finish;
@@ -12,8 +13,7 @@ public class List {
     String total;
     Map<String, Boolean> finishMap;
     boolean isChecked;
-    int index;
-    String titleName;
+    int typeIndex;
 
     public List(String seq, String content, Map<String, Boolean> finishMap) {
         this.seq = seq;
@@ -22,10 +22,10 @@ public class List {
     }
 
 
-    public List(String seq, String title, int index, String titleName) {
+    public List(String seq, String type, int typeIndex, String titleName) {
         this.seq = seq;
-        this.title = title;
-        this.index = index;
+        this.type = type;
+        this.typeIndex = typeIndex;
         this.titleName = titleName;
     }
 
@@ -36,18 +36,18 @@ public class List {
         this.isChecked = isChecked;
     }
 
-    public List(String seq, String title, String content) {
+    public List(String seq, String type, String content) {
         this.seq = seq;
-        this.title = title;
+        this.type = type;
         this.content = content;
     }
 
-    public String getTitle() {
-        return title;
+    public String getType() {
+        return type;
     }
 
-    public void setTitle(String title) {
-        this.title = title;
+    public void setType(String type) {
+        this.type = type;
     }
 
     public String getContent() {
@@ -114,12 +114,12 @@ public class List {
         this.finishMap = finishMap;
     }
 
-    public int getIndex() {
-        return index;
+    public int getTypeIndex() {
+        return typeIndex;
     }
 
-    public void setIndex(int index) {
-        this.index = index;
+    public void setTypeIndex(int typeIndex) {
+        this.typeIndex = typeIndex;
     }
 
     public String getTitleName() {

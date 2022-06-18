@@ -35,7 +35,6 @@ public class MainActivity extends AppCompatActivity {
     ArrayList<List> lists;
     DBHelper helper;
     Cursor cursor;
-    int index;
 
 
     @Override
@@ -47,9 +46,6 @@ public class MainActivity extends AppCompatActivity {
         btnSearch = findViewById(R.id.btn_search);
         btnListAdd = findViewById(R.id.btn_list_group_add);
         rvList = findViewById(R.id.rv_list);
-
-        Intent intent = getIntent();
-        index = intent.getIntExtra("CALLBACK_INDEX", 0);
 
         lists = new ArrayList<>();
         helper = new DBHelper(mContext);
@@ -73,14 +69,14 @@ public class MainActivity extends AppCompatActivity {
         if (cursor.getCount() != 0) {
             while (cursor.moveToNext()) {
                 String seq = String.valueOf(cursor.getInt(0));
-                String title = cursor.getString(1);
-                int index = Integer.parseInt(cursor.getString(2));
+                String type = cursor.getString(1);
+                int typeIndex = Integer.parseInt(cursor.getString(2));
                 String titleName = cursor.getString(3);
                 Log.e(TAG, "seq " + seq);
-                Log.e(TAG, "title " + title);
-                Log.e(TAG, "index " + index);
+                Log.e(TAG, "type " + type);
+                Log.e(TAG, "typeIndex " + typeIndex);
                 Log.e(TAG, "titleName " + titleName);
-                list = new List(seq, title, index, titleName);
+                list = new List(seq, type, typeIndex, titleName);
                 lists.add(list);
 
             }

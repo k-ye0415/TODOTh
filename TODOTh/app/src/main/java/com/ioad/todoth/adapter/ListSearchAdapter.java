@@ -43,7 +43,7 @@ public class ListSearchAdapter extends RecyclerView.Adapter<ListSearchAdapter.Vi
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         holder.tvContent.setText(lists.get(position).getContent());
-        holder.tvTitle.setText(lists.get(position).getTitle());
+        holder.tvTitle.setText(lists.get(position).getType());
     }
 
     @Override
@@ -70,7 +70,7 @@ public class ListSearchAdapter extends RecyclerView.Adapter<ListSearchAdapter.Vi
                 public void onClick(View view) {
                     int position = getAdapterPosition();
                     Intent intent = new Intent(mContext, ListItemActivity.class);
-                    intent.putExtra("LIST_TYPE",lists.get(position).getTitle());
+                    intent.putExtra("LIST_TYPE",lists.get(position).getType());
                     mContext.startActivity(intent);
                 }
             });

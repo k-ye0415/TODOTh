@@ -39,9 +39,8 @@ public class ListAddActivity extends AppCompatActivity {
     private int index;
     private String status;
     ClickCallbackListener listener;
-    private String titleName;
-    private boolean isUpdate;
-    private int groupIndex, titleIndex;
+    String type, titleName;
+    int listSeq, typeIndex;
 
 
     @Override
@@ -56,14 +55,24 @@ public class ListAddActivity extends AppCompatActivity {
         gridLayoutManager = new GridLayoutManager(ListAddActivity.this, 2);
         rvListAdd.setLayoutManager(gridLayoutManager);
 
+
         Intent intent = getIntent();
         if (intent != null) {
-            groupIndex = intent.getIntExtra("GROUP_INDEX", 0);
+            listSeq = intent.getIntExtra("LIST_SEQ", 0);
+            type = intent.getStringExtra("LIST_TYPE");
+            typeIndex = intent.getIntExtra("TYPE_INDEX", 0);
             titleName = intent.getStringExtra("TITLE_NAME");
-            isUpdate = intent.getBooleanExtra("UPDATE_TITLE", false);
-            titleIndex = intent.getIntExtra("LIST_INDEX", 0);
-            Log.e(TAG, "index1 " + titleIndex);
+            status = intent.getStringExtra("STATUS");
             etTitleName.setText(titleName);
+            btnListAdd.setText("수정");
+            index = typeIndex;
+            Log.e(TAG, "typeIndex " + typeIndex);
+            Log.e(TAG, "status " + status);
+            Log.e(TAG, "index " + index);
+            if (status == null) {
+                status = "insert";
+                Log.e(TAG, "status " + status);
+            }
         }
 
         btnListAdd.setOnClickListener(btnOnClickListener);
@@ -91,7 +100,7 @@ public class ListAddActivity extends AppCompatActivity {
             public void callBack(int position, String status) {
                 Log.d(TAG, "position :: " + position);
                 index = position;
-                status = status;
+//                status = status;
             }
 
             @Override
@@ -100,14 +109,14 @@ public class ListAddActivity extends AppCompatActivity {
             }
         };
 
-        if (titleIndex == 0) {
-            adapter = new ListAddAdapter(ListAddActivity.this, R.layout.group_list_add_item, items, listener);
-        } else {
-            Log.e(TAG, "index2 " + titleIndex);
-            adapter = new ListAddAdapter(ListAddActivity.this, R.layout.group_list_add_item, items, listener, titleIndex);
+        if (status != null) {
+            if (status.equals("insert")) {
+                adapter = new ListAddAdapter(ListAddActivity.this, R.layout.group_list_add_item, items, listener);
+            } else {
+                adapter = new ListAddAdapter(ListAddActivity.this, R.layout.group_list_add_item, items, listener, typeIndex);
+            }
+            rvListAdd.setAdapter(adapter);
         }
-        rvListAdd.setAdapter(adapter);
-
 
     }
 
@@ -116,10 +125,9 @@ public class ListAddActivity extends AppCompatActivity {
         @Override
         public void onClick(View view) {
             titleName = etTitleName.getText().toString();
-            if(titleIndex == 0) {
+            if (status.equals("insert")) {
                 if (titleName.length() != 0) {
                     helper.insertListGroupData("LIST_GROUP", Util.listType[index], String.valueOf(index), titleName);
-//            helper.insertListData("TODO_LIST", Util.listName[index]);
                     Intent intent = new Intent(ListAddActivity.this, MainActivity.class);
                     intent.putExtra("CALLBACK_INDEX", index);
                     startActivity(intent);
@@ -128,17 +136,20 @@ public class ListAddActivity extends AppCompatActivity {
                 }
             } else {
                 if (titleName.length() != 0) {
-                    helper.updateListGroupData("LIST_GROUP", Util.listType[index], String.valueOf(index), titleName, groupIndex);
+                    helper.updateListGroupData("LIST_GROUP", Util.listType[index], String.valueOf(index), titleName, listSeq);
                     Intent intent = new Intent(ListAddActivity.this, ListItemActivity.class);
-                    intent.putExtra("GROUP_INDEX", groupIndex);
+                    intent.putExtra("LIST_SEQ", listSeq);
                     intent.putExtra("LIST_TYPE", Util.listType[index]);
+                    intent.putExtra("TYPE_INDEX", typeIndex);
                     intent.putExtra("TITLE_NAME", titleName);
-                    intent.putExtra("LIST_INDEX", intent);
+                    Log.e(TAG, "LIST_SEQ " + listSeq);
+                    Log.e(TAG, "LIST_TYPE " + Util.listType[index]);
+                    Log.e(TAG, "TYPE_INDEX " + index);
+                    Log.e(TAG, "TITLE_NAME " + titleName);
                     startActivity(intent);
                 }
             }
         }
     };
-
 
 }

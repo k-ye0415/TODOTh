@@ -44,7 +44,7 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ViewHolder> {
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        holder.ivListImg.setImageResource(Util.listImage[lists.get(position).getIndex()]);
+        holder.ivListImg.setImageResource(Util.listImage[lists.get(position).getTypeIndex()]);
         holder.tvListTitle.setText(lists.get(position).getTitleName());
     }
 
@@ -74,11 +74,14 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ViewHolder> {
                 public void onClick(View view) {
 
                     Intent intent = new Intent(mContext, ListItemActivity.class);
-                    intent.putExtra("GROUP_INDEX", lists.get(getAdapterPosition()).getSeq());
-                    intent.putExtra("LIST_TYPE", lists.get(getAdapterPosition()).getTitle());
+                    intent.putExtra("LIST_SEQ", Integer.parseInt(lists.get(getAdapterPosition()).getSeq()));
+                    intent.putExtra("LIST_TYPE", lists.get(getAdapterPosition()).getType());
+                    intent.putExtra("TYPE_INDEX", lists.get(getAdapterPosition()).getTypeIndex());
                     intent.putExtra("TITLE_NAME", lists.get(getAdapterPosition()).getTitleName());
-                    intent.putExtra("LIST_INDEX", lists.get(getAdapterPosition()).getIndex());
-                    Log.e(TAG, "index " + lists.get(getAdapterPosition()).getIndex());
+                    Log.e(TAG, "LIST_SEQ " + lists.get(getAdapterPosition()).getSeq());
+                    Log.e(TAG, "LIST_TYPE " + lists.get(getAdapterPosition()).getType());
+                    Log.e(TAG, "TYPE_INDEX " + lists.get(getAdapterPosition()).getTypeIndex());
+                    Log.e(TAG, "TITLE_NAME " + lists.get(getAdapterPosition()).getTitleName());
                     mContext.startActivity(intent);
                 }
             });
