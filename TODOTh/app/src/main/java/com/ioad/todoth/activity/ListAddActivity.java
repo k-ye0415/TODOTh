@@ -55,7 +55,6 @@ public class ListAddActivity extends AppCompatActivity {
         gridLayoutManager = new GridLayoutManager(ListAddActivity.this, 2);
         rvListAdd.setLayoutManager(gridLayoutManager);
 
-
         Intent intent = getIntent();
         if (intent != null) {
             listSeq = intent.getIntExtra("LIST_SEQ", 0);
@@ -63,8 +62,6 @@ public class ListAddActivity extends AppCompatActivity {
             typeIndex = intent.getIntExtra("TYPE_INDEX", 0);
             titleName = intent.getStringExtra("TITLE_NAME");
             status = intent.getStringExtra("STATUS");
-            etTitleName.setText(titleName);
-            btnListAdd.setText("수정");
             index = typeIndex;
             Log.e(TAG, "typeIndex " + typeIndex);
             Log.e(TAG, "status " + status);
@@ -72,6 +69,9 @@ public class ListAddActivity extends AppCompatActivity {
             if (status == null) {
                 status = "insert";
                 Log.e(TAG, "status " + status);
+            } else if (status.equals("update")) {
+                etTitleName.setText(titleName);
+                btnListAdd.setText("수정");
             }
         }
 

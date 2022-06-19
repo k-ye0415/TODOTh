@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.ioad.todoth.R;
 import com.ioad.todoth.activity.ListItemActivity;
 import com.ioad.todoth.bean.List;
+import com.ioad.todoth.common.Util;
 
 import java.util.ArrayList;
 
@@ -42,8 +43,9 @@ public class ListSearchAdapter extends RecyclerView.Adapter<ListSearchAdapter.Vi
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
+        holder.ivImage.setImageResource(Util.listImage[lists.get(position).getTypeIndex()]);
         holder.tvContent.setText(lists.get(position).getContent());
-        holder.tvTitle.setText(lists.get(position).getType());
+        holder.tvTitle.setText(lists.get(position).getTitleName());
     }
 
     @Override
@@ -70,7 +72,10 @@ public class ListSearchAdapter extends RecyclerView.Adapter<ListSearchAdapter.Vi
                 public void onClick(View view) {
                     int position = getAdapterPosition();
                     Intent intent = new Intent(mContext, ListItemActivity.class);
-                    intent.putExtra("LIST_TYPE",lists.get(position).getType());
+                    intent.putExtra("LIST_SEQ", lists.get(position).getGroupSeq());
+                    intent.putExtra("LIST_TYPE", lists.get(position).getType());
+                    intent.putExtra("TITLE_NAME", lists.get(position).getTitleName());
+//                    intent.putExtra("TYPE_INDEX", lists.get(position).getTypeIndex());
                     mContext.startActivity(intent);
                 }
             });

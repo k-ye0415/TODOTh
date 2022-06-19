@@ -14,13 +14,7 @@ public class List {
     Map<String, Boolean> finishMap;
     boolean isChecked;
     int typeIndex;
-
-    public List(String seq, String content, Map<String, Boolean> finishMap) {
-        this.seq = seq;
-        this.content = content;
-        this.finishMap = finishMap;
-    }
-
+    int groupSeq;
 
     public List(String seq, String type, int typeIndex, String titleName) {
         this.seq = seq;
@@ -36,10 +30,12 @@ public class List {
         this.isChecked = isChecked;
     }
 
-    public List(String seq, String type, String content) {
+    public List(String seq, String type, String titleName, String content, int groupSeq) {
         this.seq = seq;
         this.type = type;
         this.content = content;
+        this.titleName = titleName;
+        this.groupSeq = groupSeq;
     }
 
     public String getType() {
@@ -128,5 +124,13 @@ public class List {
 
     public void setTitleName(String titleName) {
         this.titleName = titleName;
+    }
+
+    public int getGroupSeq() {
+        return groupSeq;
+    }
+
+    public void setGroupSeq(int groupSeq) {
+        this.groupSeq = groupSeq;
     }
 }

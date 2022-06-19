@@ -17,6 +17,7 @@
     >
 
     <LinearLayout
+        android:id="@+id/ll_list_group"
         android:orientation="vertical"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -32,14 +33,5 @@
             android:layout_height="wrap_content"
             android:src="@drawable/delete_icon"
              />
-        <TextView
-            android:id="@+id/tv_list_group_name"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="text"
-            android:gravity="center"
-            android:textColor="@color/base"
-            android:layout_marginTop="10dp"
-            />
     </LinearLayout>
 </androidx.cardview.widget.CardView>

@@ -90,7 +90,7 @@ public class DBHelper extends SQLiteOpenHelper {
 
     public Cursor selectSearchData(String search) {
         db = getReadableDatabase();
-        String selectQuery = "SELECT L2.INDEX_NUM, L2.TYPE, L2.CONTENT " +
+        String selectQuery = "SELECT L2.INDEX_NUM, L2.TYPE, L2.TITLE_NAME, L2.CONTENT, L1.INDEX_NUM " +
                 "FROM LIST_GROUP as L1 " +
                 "JOIN TODO_LIST as L2 " +
                 "ON L1.TYPE = L2.TYPE " +
@@ -105,10 +105,10 @@ public class DBHelper extends SQLiteOpenHelper {
 
     public Cursor selectSearchFinishData(String search) {
         db = getReadableDatabase();
-        String selectQuery = "SELECT L2.INDEX_NUM, L2.TYPE, L2.CONTENT " +
+        String selectQuery = "SELECT L2.INDEX_NUM, L2.TYPE, L2.TITLE_NAME, L2.CONTENT, L1.INDEX_NUM " +
                 "FROM LIST_GROUP as L1 " +
                 "JOIN TODO_LIST as L2 " +
-                "ON L1.TYPE = L2.TITLE " +
+                "ON L1.TYPE = L2.TYPE " +
                 "WHERE (L2.TYPE || L2.CONTENT) LIKE '%" + search + "%'" +
                 "AND L1.DELETE_DATE IS NULL " +
                 "AND L2.DELETE_DATE IS NULL " +

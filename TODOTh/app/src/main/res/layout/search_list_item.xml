@@ -20,21 +20,29 @@
             android:maxHeight="40dp"
             android:src="@drawable/search_icon" />
 
-        <TextView
-            android:id="@+id/tv_search_content"
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:orientation="horizontal"
             android:layout_gravity="center"
-            android:layout_marginRight="20dp"
-            android:text="content"
-            android:textSize="20dp" />
+            >
+            <TextView
+                android:id="@+id/tv_search_content"
+                android:layout_width="0px"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="content"
+                android:textSize="20dp" />
 
-        <TextView
-            android:id="@+id/tv_search_title"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:text="title" />
+            <TextView
+                android:id="@+id/tv_search_title"
+                android:layout_width="0px"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="right"
+                android:layout_marginRight="10dp"
+                android:text="title" />
+        </LinearLayout>
     </LinearLayout>
     <View
         android:layout_width="match_parent"

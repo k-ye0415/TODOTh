@@ -2,6 +2,7 @@ package com.ioad.todoth.adapter;
 
 import android.content.Context;
 import android.graphics.Color;
+import android.os.Build;
 import android.util.Log;
 import android.util.SparseBooleanArray;
 import android.view.LayoutInflater;
@@ -9,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CompoundButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
@@ -68,12 +70,14 @@ public class ListAddAdapter extends RecyclerView.Adapter<ListAddAdapter.ViewHold
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         holder.ivItemImage.setImageResource(items.get(position).getImage());
-        holder.tvItemText.setText(items.get(position).getName());
+//        holder.tvItemText.setText(items.get(position).getName());
 
-        if (mSelectedItems.get(position, false)) {
-            holder.ivItemImage.setBackgroundColor(Color.BLUE);
-        } else {
-            holder.ivItemImage.setBackgroundColor(Color.WHITE);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            if (mSelectedItems.get(position, false)) {
+                holder.llListGroup.setBackgroundColor(mContext.getColor(R.color.base));
+            } else {
+                holder.llListGroup.setBackgroundColor(mContext.getColor(R.color.point));
+            }
         }
     }
 
@@ -86,9 +90,8 @@ public class ListAddAdapter extends RecyclerView.Adapter<ListAddAdapter.ViewHold
 
     public class ViewHolder extends RecyclerView.ViewHolder {
 
+        public LinearLayout llListGroup;
         public ImageView ivItemImage;
-        public TextView tvItemText;
-        public CardView cvLayout;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -98,12 +101,11 @@ public class ListAddAdapter extends RecyclerView.Adapter<ListAddAdapter.ViewHold
                 temp = typeIndex;
                 status = "";
             }
-            cvLayout = itemView.findViewById(R.id.cv_list_group);
+            llListGroup = itemView.findViewById(R.id.ll_list_group);
             ivItemImage = itemView.findViewById(R.id.iv_group_image);
-            tvItemText = itemView.findViewById(R.id.tv_list_group_name);
 
 
-            ivItemImage.setOnClickListener(new View.OnClickListener() {
+            llListGroup.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     int position = getAdapterPosition();

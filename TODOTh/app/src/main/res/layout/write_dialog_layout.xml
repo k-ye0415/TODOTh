@@ -32,6 +32,7 @@
             android:layout_weight="1"
             android:text="CANCEL"
             android:layout_marginRight="10dp"
+            android:backgroundTint="@color/point"
             />
         <Button
             android:id="@+id/btn_item_add"
@@ -40,6 +41,7 @@
             android:layout_weight="1"
             android:text="OK"
             android:layout_marginLeft="10dp"
+            android:backgroundTint="@color/point"
             />
     </LinearLayout>
 
