@@ -20,6 +20,7 @@ import com.ioad.todoth.adapter.ListSearchAdapter;
 import com.ioad.todoth.bean.List;
 import com.ioad.todoth.common.DBHelper;
 import com.ioad.todoth.common.Shared;
+import com.ioad.todoth.common.Util;
 
 import java.util.ArrayList;
 
@@ -89,7 +90,7 @@ public class ListSearchActivity extends AppCompatActivity {
             search = etSearch.getText().toString();
             if (!cbIsCheck) {
                 if (search.length() == 0) {
-                    Toast.makeText(ListSearchActivity.this, "검색어를 입력해주세요", Toast.LENGTH_SHORT).show();
+                    Util.showToast(ListSearchActivity.this, "검색어를 입력해주세요");
                     btnIsClick = false;
                 } else {
                     getSearchList();
@@ -126,7 +127,7 @@ public class ListSearchActivity extends AppCompatActivity {
             rvSearchList.setAdapter(adapter);
 
         } else {
-            Toast.makeText(ListSearchActivity.this, "검색 내용이 없습니다", Toast.LENGTH_SHORT).show();
+            Util.showToast(ListSearchActivity.this, "검색 내용이 없습니다");
         }
 
     }
@@ -154,7 +155,7 @@ public class ListSearchActivity extends AppCompatActivity {
             rvSearchList.setAdapter(adapter);
 
         } else {
-            Toast.makeText(ListSearchActivity.this, "검색 내용이 없습니다", Toast.LENGTH_SHORT).show();
+            Util.showToast(ListSearchActivity.this, "검색 내용이 없습니다");
         }
     }
 

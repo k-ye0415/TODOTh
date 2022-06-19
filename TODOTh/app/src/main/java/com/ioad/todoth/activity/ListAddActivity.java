@@ -132,7 +132,7 @@ public class ListAddActivity extends AppCompatActivity {
                     intent.putExtra("CALLBACK_INDEX", index);
                     startActivity(intent);
                 } else {
-                    Toast.makeText(ListAddActivity.this, "Title Check!", Toast.LENGTH_SHORT).show();
+                    Util.showToast(ListAddActivity.this, "리스트 이름을 작성해주세요!");
                 }
             } else {
                 if (titleName.length() != 0) {

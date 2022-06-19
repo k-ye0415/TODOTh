@@ -23,11 +23,13 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.ioad.todoth.R;
+import com.ioad.todoth.activity.ListAddActivity;
 import com.ioad.todoth.activity.ListItemActivity;
 import com.ioad.todoth.activity.MainActivity;
 import com.ioad.todoth.bean.List;
 import com.ioad.todoth.common.ClickCallbackListener;
 import com.ioad.todoth.common.DBHelper;
+import com.ioad.todoth.common.Util;
 
 import java.util.ArrayList;
 
@@ -220,7 +222,7 @@ public class ListItemAdapter extends RecyclerView.Adapter<ListItemAdapter.ViewHo
                         ((Activity) mContext).startActivity(intent); //현재 액티비티 재실행 실시
                         ((Activity) mContext).overridePendingTransition(0, 0); //효과 없애기
                     } else {
-                        Toast.makeText(mContext, "Writ TODO", Toast.LENGTH_SHORT).show();
+                        Util.showToast(mContext, "리스트 이름을 작성해주세요!");
                     }
                     break;
                 case R.id.btn_group_delete:

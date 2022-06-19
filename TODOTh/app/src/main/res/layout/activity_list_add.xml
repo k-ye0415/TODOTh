@@ -12,9 +12,12 @@
         android:id="@+id/et_title_name"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="TODO Title" />
+        android:hint="리스트 이름을 작성해 주세요 😉"
+        android:textAlignment="center"
+        />
 
     <androidx.recyclerview.widget.RecyclerView
+        android:layout_marginTop="10dp"
         android:id="@+id/rv_add_list_group"
         android:layout_width="match_parent"
         android:layout_height="0px"
@@ -27,6 +30,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="등록"
-        android:backgroundTint="@color/point"
+        android:backgroundTint="@color/base"
         />
 </LinearLayout>

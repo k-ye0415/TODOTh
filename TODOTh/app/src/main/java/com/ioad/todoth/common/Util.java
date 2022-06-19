@@ -1,5 +1,8 @@
 package com.ioad.todoth.common;
 
+import android.content.Context;
+import android.widget.Toast;
+
 import com.ioad.todoth.R;
 
 public class Util {
@@ -20,5 +23,10 @@ public class Util {
             R.drawable.study_icon,
             R.drawable.etc_icon
     };
+
+
+    public static void showToast(Context context, String msg) {
+        Toast.makeText(context, msg, Toast.LENGTH_SHORT).show();
+    }
 
 }

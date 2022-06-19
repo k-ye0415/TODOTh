@@ -74,9 +74,9 @@ public class ListAddAdapter extends RecyclerView.Adapter<ListAddAdapter.ViewHold
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             if (mSelectedItems.get(position, false)) {
-                holder.llListGroup.setBackgroundColor(mContext.getColor(R.color.base));
-            } else {
                 holder.llListGroup.setBackgroundColor(mContext.getColor(R.color.point));
+            } else {
+                holder.llListGroup.setBackgroundColor(mContext.getColor(R.color.base));
             }
         }
     }

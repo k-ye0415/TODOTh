@@ -23,6 +23,7 @@ import com.ioad.todoth.adapter.ListItemAdapter;
 import com.ioad.todoth.bean.List;
 import com.ioad.todoth.common.ClickCallbackListener;
 import com.ioad.todoth.common.DBHelper;
+import com.ioad.todoth.common.Util;
 
 import java.util.ArrayList;
 
@@ -230,7 +231,7 @@ public class ListItemActivity extends AppCompatActivity {
                         dialog.dismiss();
                         onResume();
                     } else {
-                        Toast.makeText(ListItemActivity.this, "Writ TODO", Toast.LENGTH_SHORT).show();
+                        Util.showToast(ListItemActivity.this, "리스트를 작성해 주세요!");
                     }
                     break;
                 case R.id.btn_group_delete:
@@ -247,10 +248,6 @@ public class ListItemActivity extends AppCompatActivity {
     protected void onRestart() {
         super.onRestart();
         Log.e(TAG, "Activity onRestart : " + seqs.toString());
-        Intent intent = getIntent();
-        String test = intent.getStringExtra("TEST");
-        Log.e(TAG, "Activity onRestart : " + test);
-
     }
 
     @Override
