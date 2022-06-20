@@ -31,8 +31,24 @@ public class DBHelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase sqLiteDatabase) {
-        String listGroupQuery = "CREATE TABLE if not exists " + GROUP_TABLE_NAME + " (INDEX_NUM INTEGER PRIMARY KEY AUTOINCREMENT, TYPE, TITLE_NAME, TYPE_INDEX, ADD_DATE, UPDATE_DATE, DELETE_DATE)";
-        String listQuery = "CREATE TABLE if not exists " + LIST_TABLE_NAME + " (INDEX_NUM INTEGER PRIMARY KEY AUTOINCREMENT, TYPE, TITLE_NAME, CONTENT, ADD_DATE, UPDATE_DATE, DELETE_DATE, FINISH, RESTART)";
+        String listGroupQuery = "CREATE TABLE if not exists " + GROUP_TABLE_NAME +
+                " (INDEX_NUM INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                "TYPE, " +
+                "TITLE_NAME, " +
+                "TYPE_INDEX, " +
+                "ADD_DATE, " +
+                "UPDATE_DATE, DELETE_DATE)";
+        String listQuery = "CREATE TABLE if not exists " + LIST_TABLE_NAME +
+                " (INDEX_NUM INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                "TYPE, " +
+                "TITLE_NAME, " +
+                "GROUP_INDEX, " +
+                "CONTENT, " +
+                "ADD_DATE, " +
+                "UPDATE_DATE, " +
+                "DELETE_DATE, " +
+                "FINISH, " +
+                "RESTART)";
         Log.e(TAG, "create : " + listGroupQuery);
         Log.e(TAG, "create : " + listQuery);
         sqLiteDatabase.execSQL(listGroupQuery);
@@ -51,9 +67,11 @@ public class DBHelper extends SQLiteOpenHelper {
         db.execSQL(insertQuery);
     }
 
-    public void insertListData(String tableName, String type, String titleName, String content) {
+    public void insertListData(String tableName, String type, String titleName, String content, int groupIndex) {
         db = getWritableDatabase();
-        String insertQuery = "INSERT INTO " + LIST_TABLE_NAME + " ('TYPE', 'TITLE_NAME', 'CONTENT', 'FINISH', 'ADD_DATE') VALUES ('" + type + "', '" + titleName + "', '" + content + "', 'N', '" + getTime() + "');";
+        String insertQuery = "INSERT INTO " + LIST_TABLE_NAME +
+                " ('TYPE', 'TITLE_NAME', 'GROUP_INDEX', 'CONTENT', 'FINISH', 'ADD_DATE') " +
+                "VALUES ('" + type + "', '" + titleName + "', '" + groupIndex + "', '" + content + "', 'N', '" + getTime() + "');";
         Log.e(TAG, insertQuery);
         db.execSQL(insertQuery);
     }
@@ -80,7 +98,8 @@ public class DBHelper extends SQLiteOpenHelper {
                 "JOIN " + GROUP_TABLE_NAME + " AS L2 " +
                 "ON L1.TYPE = L2.TYPE " +
                 "WHERE L1.TYPE = '" + type + "' " +
-                "AND L2.INDEX_NUM = " + listSeq + " " +
+                "AND L1.GROUP_INDEX = L2.INDEX_NUM " +
+                "AND L1.GROUP_INDEX = '" + listSeq + "'" +
                 "AND L1.DELETE_DATE IS NULL " +
                 "ORDER by L1.INDEX_NUM DESC;";
         Log.e(TAG, selectQuery);
@@ -94,7 +113,8 @@ public class DBHelper extends SQLiteOpenHelper {
                 "FROM LIST_GROUP as L1 " +
                 "JOIN TODO_LIST as L2 " +
                 "ON L1.TYPE = L2.TYPE " +
-                "WHERE (L2.TYPE || L2.CONTENT) LIKE '%" + search + "%'" +
+                "WHERE (L2.TITLE_NAME || L2.CONTENT) LIKE '%" + search + "%'" +
+                "AND L2.GROUP_INDEX = L1.INDEX_NUM " +
                 "AND L1.DELETE_DATE IS NULL " +
                 "AND L2.DELETE_DATE IS NULL " +
                 "ORDER by L2.INDEX_NUM DESC;";
@@ -109,7 +129,7 @@ public class DBHelper extends SQLiteOpenHelper {
                 "FROM LIST_GROUP as L1 " +
                 "JOIN TODO_LIST as L2 " +
                 "ON L1.TYPE = L2.TYPE " +
-                "WHERE (L2.TYPE || L2.CONTENT) LIKE '%" + search + "%'" +
+                "WHERE (L2.TITLE_NAME || L2.CONTENT) LIKE '%" + search + "%'" +
                 "AND L1.DELETE_DATE IS NULL " +
                 "AND L2.DELETE_DATE IS NULL " +
                 "AND L2.FINISH = 'N' " +

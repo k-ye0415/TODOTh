@@ -8,6 +8,7 @@ import android.database.Cursor;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
@@ -34,6 +35,7 @@ public class ListSearchActivity extends AppCompatActivity {
     RecyclerView rvSearchList;
     RecyclerView.Adapter adapter;
     RecyclerView.LayoutManager layoutManager;
+    InputMethodManager methodManager;
 
     DBHelper helper;
     Cursor cursor;
@@ -61,6 +63,17 @@ public class ListSearchActivity extends AppCompatActivity {
 
         cbIsCheck = Shared.getCheckBoxPref(ListSearchActivity.this, "NO_FINISH");
         checkBox.setChecked(cbIsCheck);
+
+        methodManager = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
+        methodManager.showSoftInput(etSearch, 0);
+
+        etSearch.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                etSearch.requestFocus();
+                methodManager.showSoftInput(etSearch, 0);
+            }
+        }, 100);
 
     }
 
@@ -100,6 +113,7 @@ public class ListSearchActivity extends AppCompatActivity {
                 getNoFinishSearchList();
                 btnIsClick = true;
             }
+            methodManager.hideSoftInputFromWindow(etSearch.getWindowToken(), 0);
         }
     };
 
