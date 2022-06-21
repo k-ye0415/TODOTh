@@ -129,8 +129,9 @@ public class ListSearchActivity extends AppCompatActivity {
                 String titleName = cursor.getString(2);
                 String content = cursor.getString(3);
                 int listGroupSeq = Integer.parseInt(cursor.getString(4));
+                int typeIndex = Integer.parseInt(cursor.getString(5));
 
-                list = new List(seq, title, titleName, content, listGroupSeq);
+                list = new List(seq, title, titleName, content, listGroupSeq, typeIndex);
                 lists.add(list);
             }
 
@@ -157,8 +158,9 @@ public class ListSearchActivity extends AppCompatActivity {
                 String titleName = cursor.getString(2);
                 String content = cursor.getString(3);
                 int listGroupSeq = Integer.parseInt(cursor.getString(4));
+                int typeIndex = Integer.parseInt(cursor.getString(5));
 
-                list = new List(seq, title, titleName, content, listGroupSeq);
+                list = new List(seq, title, titleName, content, listGroupSeq, typeIndex);
                 lists.add(list);
             }
 

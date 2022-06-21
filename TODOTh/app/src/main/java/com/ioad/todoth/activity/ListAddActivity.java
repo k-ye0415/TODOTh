@@ -131,6 +131,7 @@ public class ListAddActivity extends AppCompatActivity {
                     Intent intent = new Intent(ListAddActivity.this, MainActivity.class);
                     intent.putExtra("CALLBACK_INDEX", index);
                     startActivity(intent);
+                    finish();
                 } else {
                     Util.showToast(ListAddActivity.this, "리스트 이름을 작성해주세요!");
                 }
@@ -147,6 +148,7 @@ public class ListAddActivity extends AppCompatActivity {
                     Log.e(TAG, "TYPE_INDEX " + index);
                     Log.e(TAG, "TITLE_NAME " + titleName);
                     startActivity(intent);
+                    finish();
                 }
             }
         }

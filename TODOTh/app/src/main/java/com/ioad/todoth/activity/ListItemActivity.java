@@ -227,7 +227,7 @@ public class ListItemActivity extends AppCompatActivity {
                 case R.id.btn_item_add:
                     String content = etItem.getText().toString();
                     if (content.length() != 0) {
-                        helper.insertListData("TODO_LIST", type, titleName, content, typeIndex);
+                        helper.insertListData("TODO_LIST", type, titleName, content, listSeq);
                         dialog.dismiss();
                         onResume();
                     } else {

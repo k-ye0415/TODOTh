@@ -30,12 +30,13 @@ public class List {
         this.isChecked = isChecked;
     }
 
-    public List(String seq, String type, String titleName, String content, int groupSeq) {
+    public List(String seq, String type, String titleName, String content, int groupSeq, int typeIndex) {
         this.seq = seq;
         this.type = type;
         this.content = content;
         this.titleName = titleName;
         this.groupSeq = groupSeq;
+        this.typeIndex = typeIndex;
     }
 
     public String getType() {
