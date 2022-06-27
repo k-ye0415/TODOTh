@@ -35,7 +35,8 @@ public class ListItemActivity extends AppCompatActivity {
     RecyclerView rvListItem;
     RecyclerView.Adapter adapter;
     RecyclerView.LayoutManager layoutManager;
-    ImageView btnItemAdd, btnTitleUpdate, btnGroupDelete;
+//    ImageView btnItemAdd;
+    TextView btnTitleUpdate, btnGroupDelete, btnItemAdd;
 
     ArrayList<List> lists;
     List list;
@@ -45,7 +46,7 @@ public class ListItemActivity extends AppCompatActivity {
     Window window;
     // write dialog
     EditText etItem;
-    Button btnAddCancel, btnAdd;
+    Button btnAddCancel, btnAdd, btnKeepAdd;
 
     // delete dialog
     Button btnDeleteCancel, btnDelete;
@@ -153,7 +154,6 @@ public class ListItemActivity extends AppCompatActivity {
         }
     }
 
-
     View.OnClickListener btnOnClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View view) {
@@ -172,13 +172,16 @@ public class ListItemActivity extends AppCompatActivity {
                     window = dialog.getWindow();
                     window.setAttributes(layoutParams);
                     dialog.show();
+                    dialog.setCancelable(false);
 
                     etItem = dialog.findViewById(R.id.et_content);
                     btnAddCancel = dialog.findViewById(R.id.btn_item_add_cancel);
                     btnAdd = dialog.findViewById(R.id.btn_item_add);
+                    btnKeepAdd = dialog.findViewById(R.id.btn_item_keep_adding);
 
                     btnAddCancel.setOnClickListener(dialogBtnOnClickListener);
                     btnAdd.setOnClickListener(dialogBtnOnClickListener);
+                    btnKeepAdd.setOnClickListener(dialogBtnOnClickListener);
                     break;
                 case R.id.btn_update_list_group:
                     Intent intent = new Intent(ListItemActivity.this, ListAddActivity.class);
@@ -203,6 +206,7 @@ public class ListItemActivity extends AppCompatActivity {
                     window = dialog.getWindow();
                     window.setAttributes(layoutParams);
                     dialog.show();
+                    dialog.setCancelable(false);
 
                     btnDeleteCancel = dialog.findViewById(R.id.btn_group_delete_cancel);
                     btnDelete = dialog.findViewById(R.id.btn_group_delete);
@@ -219,13 +223,14 @@ public class ListItemActivity extends AppCompatActivity {
     View.OnClickListener dialogBtnOnClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View view) {
+            String content;
             switch (view.getId()) {
                 case R.id.btn_item_add_cancel:
                 case R.id.btn_group_delete_cancel:
                     dialog.dismiss();
                     break;
                 case R.id.btn_item_add:
-                    String content = etItem.getText().toString();
+                    content = etItem.getText().toString();
                     if (content.length() != 0) {
                         helper.insertListData("TODO_LIST", type, titleName, content, listSeq);
                         dialog.dismiss();
@@ -239,6 +244,18 @@ public class ListItemActivity extends AppCompatActivity {
                     dialog.dismiss();
                     Intent intent = new Intent(ListItemActivity.this, MainActivity.class);
                     startActivity(intent);
+                    break;
+                case R.id.btn_item_keep_adding:
+                    content = etItem.getText().toString();
+                    if (content.length() != 0) {
+                        helper.insertListData("TODO_LIST", type, titleName, content, listSeq);
+                        dialog.dismiss();
+                        onResume();
+                        etItem.setText("");
+                        dialog.show();
+                    } else {
+                        Util.showToast(ListItemActivity.this, "리스트를 작성해 주세요!");
+                    }
                     break;
             }
         }

@@ -126,30 +126,30 @@ public class ListAddActivity extends AppCompatActivity {
         public void onClick(View view) {
             titleName = etTitleName.getText().toString();
             if (status.equals("insert")) {
-                if (titleName.length() != 0) {
-                    helper.insertListGroupData("LIST_GROUP", Util.listType[index], String.valueOf(index), titleName);
-                    Intent intent = new Intent(ListAddActivity.this, MainActivity.class);
-                    intent.putExtra("CALLBACK_INDEX", index);
-                    startActivity(intent);
-                    finish();
-                } else {
-                    Util.showToast(ListAddActivity.this, "리스트 이름을 작성해주세요!");
+                if (titleName.length() == 0) {
+                    titleName = "제목없음";
                 }
+                helper.insertListGroupData("LIST_GROUP", Util.listType[index], String.valueOf(index), titleName);
+                Intent intent = new Intent(ListAddActivity.this, MainActivity.class);
+                intent.putExtra("CALLBACK_INDEX", index);
+                startActivity(intent);
+                finish();
             } else {
-                if (titleName.length() != 0) {
-                    helper.updateListGroupData("LIST_GROUP", Util.listType[index], String.valueOf(index), titleName, listSeq);
-                    Intent intent = new Intent(ListAddActivity.this, ListItemActivity.class);
-                    intent.putExtra("LIST_SEQ", listSeq);
-                    intent.putExtra("LIST_TYPE", Util.listType[index]);
-                    intent.putExtra("TYPE_INDEX", typeIndex);
-                    intent.putExtra("TITLE_NAME", titleName);
-                    Log.e(TAG, "LIST_SEQ " + listSeq);
-                    Log.e(TAG, "LIST_TYPE " + Util.listType[index]);
-                    Log.e(TAG, "TYPE_INDEX " + index);
-                    Log.e(TAG, "TITLE_NAME " + titleName);
-                    startActivity(intent);
-                    finish();
+                if (titleName.length() == 0) {
+                    titleName = "제목없음";
                 }
+                helper.updateListGroupData("LIST_GROUP", Util.listType[index], String.valueOf(index), titleName, listSeq);
+                Intent intent = new Intent(ListAddActivity.this, ListItemActivity.class);
+                intent.putExtra("LIST_SEQ", listSeq);
+                intent.putExtra("LIST_TYPE", Util.listType[index]);
+                intent.putExtra("TYPE_INDEX", typeIndex);
+                intent.putExtra("TITLE_NAME", titleName);
+                Log.e(TAG, "LIST_SEQ " + listSeq);
+                Log.e(TAG, "LIST_TYPE " + Util.listType[index]);
+                Log.e(TAG, "TYPE_INDEX " + index);
+                Log.e(TAG, "TITLE_NAME " + titleName);
+                startActivity(intent);
+                finish();
             }
         }
     };

@@ -27,27 +27,23 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="right"
+            android:layout_gravity="center"
             android:orientation="horizontal">
 
-            <ImageView
+            <TextView
                 android:id="@+id/btn_update_list_group"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@drawable/update_icon"
-                android:maxHeight="40dp"
-                android:maxWidth="40dp"
-                android:adjustViewBounds="true"
                 android:layout_marginRight="15dp"
+                android:text="수정"
                 />
 
-            <ImageView
+            <TextView
                 android:id="@+id/btn_delete_list_group"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@drawable/delete_icon"
-                android:maxHeight="40dp"
-                android:maxWidth="40dp"
-                android:adjustViewBounds="true"
+                android:text="삭제"
+                android:textColor="#F44336"
                 />
 
         </LinearLayout>
@@ -55,7 +51,7 @@
     <View
         android:layout_width="match_parent"
         android:layout_height="1px"
-        android:background="@color/point"
+        android:background="@color/base"
         />
     <FrameLayout
         android:layout_width="match_parent"
@@ -67,16 +63,17 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
 
-        <ImageView
+        <TextView
             android:id="@+id/btn_list_item_add"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="bottom|right"
             android:layout_margin="15dp"
-            android:src="@drawable/plus_icon"
-            android:maxHeight="60dp"
-            android:maxWidth="60dp"
-            android:adjustViewBounds="true"/>
+            android:text="✏️ 등록하기"
+            android:background="@drawable/button_background_custom"
+            android:padding="13dp"
+            android:textColor="@color/point"
+            />
     </FrameLayout>
 
 </LinearLayout>

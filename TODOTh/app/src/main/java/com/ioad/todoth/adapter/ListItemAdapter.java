@@ -50,7 +50,7 @@ public class ListItemAdapter extends RecyclerView.Adapter<ListItemAdapter.ViewHo
     Window window;
     // write dialog
     EditText etItem;
-    Button btnAddCancel, btnAdd;
+    Button btnAddCancel, btnAdd, btnKeepAdd;
 
     // delete dialog
     Button btnDeleteCancel, btnDelete;
@@ -162,6 +162,7 @@ public class ListItemAdapter extends RecyclerView.Adapter<ListItemAdapter.ViewHo
                     window = dialog.getWindow();
                     window.setAttributes(layoutParams);
                     dialog.show();
+                    dialog.setCancelable(false);
 
                     btnDeleteCancel = dialog.findViewById(R.id.btn_group_delete_cancel);
                     btnDelete = dialog.findViewById(R.id.btn_group_delete);
@@ -189,10 +190,15 @@ public class ListItemAdapter extends RecyclerView.Adapter<ListItemAdapter.ViewHo
                     window = dialog.getWindow();
                     window.setAttributes(layoutParams);
                     dialog.show();
+                    dialog.setCancelable(false);
 
                     etItem = dialog.findViewById(R.id.et_content);
                     btnAddCancel = dialog.findViewById(R.id.btn_item_add_cancel);
                     btnAdd = dialog.findViewById(R.id.btn_item_add);
+                    btnKeepAdd = dialog.findViewById(R.id.btn_item_keep_adding);
+
+                    btnAdd.setText("수정");
+                    btnKeepAdd.setVisibility(View.GONE);
 
                     etItem.setText(lists.get(getAdapterPosition()).getContent());
                     btnAddCancel.setOnClickListener(dialogBtnOnClickListener);

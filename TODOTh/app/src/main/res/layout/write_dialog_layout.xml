@@ -27,25 +27,30 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:orientation="vertical">
+
+        <Button
+            android:id="@+id/btn_item_add"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="등록"
+            android:backgroundTint="@color/base"
+            />
+
+        <Button
+            android:id="@+id/btn_item_keep_adding"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="연속 등록"
+            android:backgroundTint="@color/base"
+            />
 
         <Button
             android:id="@+id/btn_item_add_cancel"
-            android:layout_width="0px"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="CANCEL"
-            android:layout_marginRight="10dp"
-            android:backgroundTint="@color/base"
-            />
-        <Button
-            android:id="@+id/btn_item_add"
-            android:layout_width="0px"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="OK"
-            android:layout_marginLeft="10dp"
-            android:backgroundTint="@color/base"
+            android:text="취소"
+            android:backgroundTint="#9E9E9E"
             />
     </LinearLayout>
 

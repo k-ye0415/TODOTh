@@ -15,6 +15,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.ioad.todoth.R;
 import com.ioad.todoth.adapter.ListAdapter;
@@ -28,7 +29,8 @@ public class MainActivity extends AppCompatActivity {
     private final String TAG = getClass().getSimpleName();
 
     Context mContext;
-    ImageView btnSearch, btnListAdd;
+    ImageView btnSearch;
+    TextView btnListAdd;
     RecyclerView rvList;
     RecyclerView.Adapter adapter;
     RecyclerView.LayoutManager layoutManager;
