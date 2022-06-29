@@ -2,6 +2,7 @@ package com.ioad.todoth.adapter;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -27,11 +28,13 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ViewHolder> {
     private Context mContext;
     private int layout = 0;
     private ArrayList<List> lists;
+    private int[] colors;
 
-    public ListAdapter(Context mContext, int layout, ArrayList<List> lists) {
+    public ListAdapter(Context mContext, int layout, ArrayList<List> lists, int[] colors) {
         this.mContext = mContext;
         this.layout = layout;
         this.lists = lists;
+        this.colors = colors;
     }
 
     @NonNull
@@ -44,7 +47,9 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ViewHolder> {
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        holder.ivListImg.setImageResource(Util.listImage[lists.get(position).getTypeIndex()]);
+//        holder.listItem.setBackgroundColor(colors[lists.get(position).getTypeIndex()]);
+        holder.ivListImg.setBackgroundColor(colors[lists.get(position).getTypeIndex()]);
+//        holder.ivListImg.setImageResource(Util.listImage[lists.get(position).getTypeIndex()]);
         holder.tvListTitle.setText(lists.get(position).getTitleName());
     }
 
@@ -58,7 +63,7 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ViewHolder> {
     public class ViewHolder extends RecyclerView.ViewHolder {
 
         public LinearLayout listItem;
-        public ImageView ivListImg;
+        public View ivListImg;
         public TextView tvListTitle;
 
 
@@ -68,6 +73,7 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ViewHolder> {
             listItem = itemView.findViewById(R.id.ll_list_group_item);
             ivListImg = itemView.findViewById(R.id.iv_list_group_image);
             tvListTitle = itemView.findViewById(R.id.tv_list_group_title);
+
 
             listItem.setOnClickListener(new View.OnClickListener() {
                 @Override

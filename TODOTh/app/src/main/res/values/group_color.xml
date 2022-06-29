@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <array name="groupColor">
+        <item>@color/color1</item>
+        <item>@color/color2</item>
+        <item>@color/color3</item>
+        <item>@color/color4</item>
+        <item>@color/color5</item>
+        <item>@color/color6</item>
+        <item>@color/color7</item>
+    </array>
+    <color name="color1">#EEAFAF</color>
+    <color name="color2">#AFC4E7</color>
+    <color name="color3">#BAE7AF</color>
+    <color name="color4">#EEE77E</color>
+    <color name="color5">#FDC4F8</color>
+    <color name="color6">#CB9FFD</color>
+    <color name="color7">#A9E1ED</color>
+</resources>

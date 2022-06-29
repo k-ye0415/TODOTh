@@ -12,14 +12,20 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal">
 
-        <ImageView
+<!--        <ImageView-->
+<!--            android:id="@+id/iv_list_group_image"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:src="@drawable/plus_icon"-->
+<!--            android:maxHeight="60dp"-->
+<!--            android:maxWidth="60dp"-->
+<!--            android:adjustViewBounds="true"-->
+<!--            />-->
+        <View
             android:id="@+id/iv_list_group_image"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/plus_icon"
-            android:maxHeight="60dp"
-            android:maxWidth="60dp"
-            android:adjustViewBounds="true"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:background="@drawable/list_group_color"
             />
 
         <LinearLayout

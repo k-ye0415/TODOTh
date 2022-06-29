@@ -39,21 +39,24 @@ public class ListAddAdapter extends RecyclerView.Adapter<ListAddAdapter.ViewHold
     private int typeIndex;
     private SparseBooleanArray mSelectedItems = new SparseBooleanArray(0);
     private String status;
+    private int[] colors;
 
-    public ListAddAdapter(Context mContext, int layout, ArrayList<Item> items, ClickCallbackListener listener) {
+    public ListAddAdapter(Context mContext, int layout, ArrayList<Item> items, ClickCallbackListener listener, int[] colors) {
         this.mContext = mContext;
         this.layout = layout;
         this.items = items;
         this.callbackListener = listener;
+        this.colors = colors;
         this.status = "insert";
     }
 
-    public ListAddAdapter(Context mContext, int layout, ArrayList<Item> items, ClickCallbackListener listener, int typeIndex) {
+    public ListAddAdapter(Context mContext, int layout, ArrayList<Item> items, ClickCallbackListener listener, int typeIndex, int[] colors) {
         this.mContext = mContext;
         this.layout = layout;
         this.items = items;
         this.callbackListener = listener;
         this.typeIndex = typeIndex;
+        this.colors = colors;
         this.status = "update";
         Log.e(TAG, "index " + typeIndex);
     }
@@ -69,8 +72,9 @@ public class ListAddAdapter extends RecyclerView.Adapter<ListAddAdapter.ViewHold
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        holder.ivItemImage.setImageResource(items.get(position).getImage());
+//        holder.ivItemImage.setImageResource(items.get(position).getImage());
 //        holder.tvItemText.setText(items.get(position).getName());
+        holder.groupColor.setBackgroundColor(colors[position]);
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             if (mSelectedItems.get(position, false)) {
@@ -91,7 +95,7 @@ public class ListAddAdapter extends RecyclerView.Adapter<ListAddAdapter.ViewHold
     public class ViewHolder extends RecyclerView.ViewHolder {
 
         public LinearLayout llListGroup;
-        public ImageView ivItemImage;
+        public View groupColor;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -102,8 +106,7 @@ public class ListAddAdapter extends RecyclerView.Adapter<ListAddAdapter.ViewHold
                 status = "";
             }
             llListGroup = itemView.findViewById(R.id.ll_list_group);
-            ivItemImage = itemView.findViewById(R.id.iv_group_image);
-
+            groupColor = itemView.findViewById(R.id.view_group_color);
 
             llListGroup.setOnClickListener(new View.OnClickListener() {
                 @Override

@@ -24,6 +24,16 @@ public class Util {
             R.drawable.etc_icon
     };
 
+    public static int[] groupColor = {
+            R.color.color1,
+            R.color.color2,
+            R.color.color3,
+            R.color.color4,
+            R.color.color5,
+            R.color.color6,
+            R.color.color7
+    };
+
 
     public static void showToast(Context context, String msg) {
         Toast.makeText(context, msg, Toast.LENGTH_SHORT).show();

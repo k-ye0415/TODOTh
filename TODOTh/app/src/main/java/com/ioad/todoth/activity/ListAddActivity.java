@@ -27,6 +27,7 @@ public class ListAddActivity extends AppCompatActivity {
     private final String TAG = getClass().getSimpleName();
 
     private ArrayList<Item> items;
+    private int[] colors;
     private Item item;
 
     private EditText etTitleName;
@@ -52,8 +53,9 @@ public class ListAddActivity extends AppCompatActivity {
         rvListAdd = findViewById(R.id.rv_add_list_group);
         btnListAdd = findViewById(R.id.btn_list_group);
         helper = new DBHelper(ListAddActivity.this);
-        gridLayoutManager = new GridLayoutManager(ListAddActivity.this, 2);
+        gridLayoutManager = new GridLayoutManager(ListAddActivity.this, 3);
         rvListAdd.setLayoutManager(gridLayoutManager);
+        colors = getResources().getIntArray(R.array.groupColor);
 
         Intent intent = getIntent();
         if (intent != null) {
@@ -111,9 +113,9 @@ public class ListAddActivity extends AppCompatActivity {
 
         if (status != null) {
             if (status.equals("insert")) {
-                adapter = new ListAddAdapter(ListAddActivity.this, R.layout.group_list_add_item, items, listener);
+                adapter = new ListAddAdapter(ListAddActivity.this, R.layout.group_list_add_item, items, listener, colors);
             } else {
-                adapter = new ListAddAdapter(ListAddActivity.this, R.layout.group_list_add_item, items, listener, typeIndex);
+                adapter = new ListAddAdapter(ListAddActivity.this, R.layout.group_list_add_item, items, listener, typeIndex, colors);
             }
             rvListAdd.setAdapter(adapter);
         }

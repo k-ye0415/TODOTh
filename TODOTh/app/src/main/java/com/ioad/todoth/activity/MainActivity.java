@@ -10,6 +10,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Canvas;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -38,6 +39,7 @@ public class MainActivity extends AppCompatActivity {
     ArrayList<List> lists;
     DBHelper helper;
     Cursor cursor;
+    private int[] colors;
 
 
     @Override
@@ -52,6 +54,7 @@ public class MainActivity extends AppCompatActivity {
 
         lists = new ArrayList<>();
         helper = new DBHelper(mContext);
+        colors = getResources().getIntArray(R.array.groupColor);
 
         btnSearch.setOnClickListener(btnOnClickListener);
         btnListAdd.setOnClickListener(btnOnClickListener);
@@ -87,7 +90,7 @@ public class MainActivity extends AppCompatActivity {
 
         layoutManager = new LinearLayoutManager(mContext);
         rvList.setLayoutManager(layoutManager);
-        adapter = new ListAdapter(mContext, R.layout.group_list_item, lists);
+        adapter = new ListAdapter(mContext, R.layout.group_list_item, lists, colors);
         rvList.setAdapter(adapter);
     }
 
