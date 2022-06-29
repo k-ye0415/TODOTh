@@ -88,7 +88,11 @@ public class ListItemAdapter extends RecyclerView.Adapter<ListItemAdapter.ViewHo
         }
 
         holder.tvContent.setText(lists.get(position).getContent());
-        holder.tvListDate.setText(lists.get(position).getSelectDate());
+        if (lists.get(position).getSelectDate().equals("null")) {
+            holder.tvListDate.setText("");
+        } else {
+            holder.tvListDate.setText(lists.get(position).getSelectDate());
+        }
         holder.cbCheck.setTag(lists.get(position));
 
         Log.e(TAG, lists.get(position).getSeq() + lists.get(position).isChecked());

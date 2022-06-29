@@ -13,6 +13,7 @@ import android.graphics.Canvas;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -20,8 +21,10 @@ import android.widget.TextView;
 
 import com.ioad.todoth.R;
 import com.ioad.todoth.adapter.ListAdapter;
+import com.ioad.todoth.bean.Item;
 import com.ioad.todoth.bean.List;
 import com.ioad.todoth.common.DBHelper;
+import com.ioad.todoth.common.Util;
 
 import java.util.ArrayList;
 
@@ -111,4 +114,18 @@ public class MainActivity extends AppCompatActivity {
             }
         }
     };
+
+//    @Override
+//    public boolean onContextItemSelected(@NonNull MenuItem item) {
+////        final int position = adapter.getPosition();
+//        ListAdapter listAdapter = new ListAdapter();
+//        final int position = listAdapter.getPosition();
+//        Log.e(TAG, "position???/ " + position);
+//        switch (item.getItemId()) {
+//            case R.id.group_modify:
+//                Util.showToast(MainActivity.this, "수정");
+//                break;
+//        }
+//        return true;
+//    }
 }

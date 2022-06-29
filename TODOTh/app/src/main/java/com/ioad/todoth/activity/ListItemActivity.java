@@ -15,8 +15,10 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.CalendarView;
+import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
+import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.Switch;
 import android.widget.TextView;
@@ -31,6 +33,7 @@ import com.ioad.todoth.common.Util;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 
 public class ListItemActivity extends AppCompatActivity {
@@ -42,8 +45,11 @@ public class ListItemActivity extends AppCompatActivity {
     RecyclerView.Adapter adapter;
     RecyclerView.LayoutManager layoutManager;
     //    ImageView btnItemAdd;
-    TextView btnTitleUpdate, btnGroupDelete, btnItemAdd;
+    TextView btnItemAdd, btnFinishInvisible;
+    FrameLayout flGroupTitle;
+    CheckBox cbAllFinish;
 
+    private int[] colors;
     ArrayList<List> lists;
     List list;
 
@@ -94,12 +100,15 @@ public class ListItemActivity extends AppCompatActivity {
         tvItemTitle = findViewById(R.id.tv_list_group_name);
         rvListItem = findViewById(R.id.rv_list);
         btnItemAdd = findViewById(R.id.btn_list_item_add);
-        btnTitleUpdate = findViewById(R.id.btn_update_list_group);
-        btnGroupDelete = findViewById(R.id.btn_delete_list_group);
+        flGroupTitle = findViewById(R.id.fl_group_title);
+        btnFinishInvisible = findViewById(R.id.btn_finish_invisible);
+        cbAllFinish = findViewById(R.id.cb_all_finish);
 
+        colors = getResources().getIntArray(R.array.groupColor);
         helper = new DBHelper(ListItemActivity.this);
         lists = new ArrayList<>();
         seqs = new ArrayList<>();
+
 
         Intent intent = getIntent();
         listSeq = intent.getIntExtra("LIST_SEQ", 0);
@@ -113,9 +122,11 @@ public class ListItemActivity extends AppCompatActivity {
         Log.e(TAG, "TITLE_NAME " + titleName);
         tvItemTitle.setText(titleName);
 
+        flGroupTitle.setBackgroundColor(colors[typeIndex]);
+
         btnItemAdd.setOnClickListener(btnOnClickListener);
-        btnTitleUpdate.setOnClickListener(btnOnClickListener);
-        btnGroupDelete.setOnClickListener(btnOnClickListener);
+        btnFinishInvisible.setOnClickListener(btnOnClickListener);
+        cbAllFinish.setOnCheckedChangeListener(checkedChangeListener);
 
     }
 
@@ -133,10 +144,10 @@ public class ListItemActivity extends AppCompatActivity {
         Log.d(TAG, "TYPE_INDEX " + typeIndex);
         Log.d(TAG, "TITLE_NAME " + titleName);
         tvItemTitle.setText(titleName);
-        getList(type, listSeq);
+        getList(type, listSeq, false, false);
     }
 
-    private void getList(String type, int listSeq) {
+    private void getList(String type, int listSeq, boolean isVisibleStatus, boolean isAllFinish) {
         cursor = helper.selectListData("TODO_LIST", type, listSeq);
         lists.clear();
         if (cursor.getCount() != 0) {
@@ -148,14 +159,34 @@ public class ListItemActivity extends AppCompatActivity {
                 String selectDate = cursor.getString(4);
                 boolean isChecked = false;
 
-                if (finish.equals("N")) {
-                    isChecked = false;
+
+                if (!isVisibleStatus) {
+                    if (!isAllFinish) {
+                        seqs.clear();
+                        if (finish.equals("N")) {
+                            isChecked = false;
+                        } else {
+                            isChecked = true;
+                        }
+                    } else {
+                        isChecked = true;
+                        seqs.add(seq);
+                    }
+                    list = new List(seq, content, finish, isChecked, selectDate);
+                    lists.add(list);
                 } else {
-                    isChecked = true;
+                    if (!isAllFinish) {
+                        seqs.clear();
+                        if (finish.equals("N")) {
+                            isChecked = false;
+                        }
+                    } else {
+                        isChecked = true;
+                    }
+                    list = new List(seq, content, finish, isChecked, selectDate);
+                    lists.add(list);
                 }
 
-                list = new List(seq, content, finish, isChecked, selectDate);
-                lists.add(list);
             }
 
 
@@ -167,6 +198,7 @@ public class ListItemActivity extends AppCompatActivity {
 
                 @Override
                 public void callBackList(ArrayList<String> numbers) {
+                    seqs.clear();
                     seqs = numbers;
                     Log.e(TAG, "Activity : " + seqs.toString());
                 }
@@ -180,6 +212,7 @@ public class ListItemActivity extends AppCompatActivity {
         }
     }
 
+    boolean isVisibleStatus = false;
     View.OnClickListener btnOnClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View view) {
@@ -216,37 +249,13 @@ public class ListItemActivity extends AppCompatActivity {
                     btnKeepAdd.setOnClickListener(dialogBtnOnClickListener);
                     btnSetDate.setOnClickListener(dialogBtnOnClickListener);
                     break;
-                case R.id.btn_update_list_group:
-                    Intent intent = new Intent(ListItemActivity.this, ListAddActivity.class);
-                    intent.putExtra("LIST_SEQ", listSeq);
-                    intent.putExtra("LIST_TYPE", type);
-                    intent.putExtra("TYPE_INDEX", typeIndex);
-                    intent.putExtra("TITLE_NAME", titleName);
-                    intent.putExtra("STATUS", "update");
-                    startActivity(intent);
-                    finish();
-                    break;
-                case R.id.btn_delete_list_group:
-                    dialog = new Dialog(ListItemActivity.this);
-                    dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-                    dialog.setContentView(R.layout.delete_dialog_layout);
-
-                    layoutParams = new WindowManager.LayoutParams();
-                    layoutParams.copyFrom(dialog.getWindow().getAttributes());
-                    layoutParams.width = WindowManager.LayoutParams.MATCH_PARENT;
-                    layoutParams.height = WindowManager.LayoutParams.WRAP_CONTENT;
-
-                    window = dialog.getWindow();
-                    window.setAttributes(layoutParams);
-                    dialog.show();
-                    dialog.setCancelable(false);
-
-                    btnDeleteCancel = dialog.findViewById(R.id.btn_group_delete_cancel);
-                    btnDelete = dialog.findViewById(R.id.btn_group_delete);
-
-                    btnDeleteCancel.setOnClickListener(dialogBtnOnClickListener);
-                    btnDelete.setOnClickListener(dialogBtnOnClickListener);
-
+                case R.id.btn_finish_invisible:
+                    if (!isVisibleStatus) {
+                        isVisibleStatus = true;
+                    } else {
+                        isVisibleStatus = false;
+                    }
+                    getList(type, listSeq, isVisibleStatus, false);
                     break;
             }
         }
@@ -340,24 +349,6 @@ public class ListItemActivity extends AppCompatActivity {
     };
 
     @Override
-    protected void onRestart() {
-        super.onRestart();
-        Log.e(TAG, "Activity onRestart : " + seqs.toString());
-    }
-
-    @Override
-    protected void onStop() {
-        super.onStop();
-        Log.e(TAG, "Activity onStop : " + seqs.toString());
-    }
-
-    @Override
-    protected void onPause() {
-        super.onPause();
-        Log.e(TAG, "Activity onPause : " + seqs.toString());
-    }
-
-    @Override
     protected void onDestroy() {
         super.onDestroy();
         Log.e(TAG, "Activity onDestroy : " + seqs.toString());
@@ -409,6 +400,18 @@ public class ListItemActivity extends AppCompatActivity {
             String minuteStr = minute < 10 ? "0" + minute : String.valueOf(minute);
             selectTime = "오후 " + hourStr + ":" + minuteStr;
             isSelectedTime = true;
+        }
+    };
+
+    CompoundButton.OnCheckedChangeListener checkedChangeListener = new CompoundButton.OnCheckedChangeListener() {
+        @Override
+        public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
+            if (isChecked) {
+                cbAllFinish.setText("선택 해제");
+            } else {
+                cbAllFinish.setText("전체 완료");
+            }
+            getList(type, listSeq, false, isChecked);
         }
     };
 
