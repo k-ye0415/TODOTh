@@ -44,6 +44,8 @@ public class DBHelper extends SQLiteOpenHelper {
                 "TITLE_NAME, " +
                 "GROUP_INDEX, " +
                 "CONTENT, " +
+                "SELECT_DATE, " +
+                "SELECT_TIME, " +
                 "ADD_DATE, " +
                 "UPDATE_DATE, " +
                 "DELETE_DATE, " +
@@ -67,11 +69,26 @@ public class DBHelper extends SQLiteOpenHelper {
         db.execSQL(insertQuery);
     }
 
-    public void insertListData(String tableName, String type, String titleName, String content, int groupIndex) {
+    public void insertListData(String tableName, String type, String titleName, String content, int groupIndex, String selectDate, String selectTime) {
         db = getWritableDatabase();
         String insertQuery = "INSERT INTO " + LIST_TABLE_NAME +
-                " ('TYPE', 'TITLE_NAME', 'GROUP_INDEX', 'CONTENT', 'FINISH', 'ADD_DATE') " +
-                "VALUES ('" + type + "', '" + titleName + "', '" + groupIndex + "', '" + content + "', 'N', '" + getTime() + "');";
+                " ('TYPE', " +
+                "'TITLE_NAME', " +
+                "'GROUP_INDEX', " +
+                "'CONTENT', " +
+                "'FINISH', " +
+                "'SELECT_DATE', " +
+                "'SELECT_TIME', " +
+                "'ADD_DATE') " +
+                "VALUES ('" +
+                    type + "', '" +
+                    titleName + "', '" +
+                    groupIndex + "', '" +
+                    content + "', " +
+                    "'N', '" +
+                    selectDate + "', '" +
+                    selectTime + "', '" +
+                    getTime() + "');";
         Log.e(TAG, insertQuery);
         db.execSQL(insertQuery);
     }
@@ -93,7 +110,8 @@ public class DBHelper extends SQLiteOpenHelper {
                 "    L1.INDEX_NUM, " +
                 "    L1.TYPE, " +
                 "    L1.CONTENT, " +
-                "    L1.FINISH " +
+                "    L1.FINISH, " +
+                "    L1.SELECT_DATE " +
                 "FROM " + LIST_TABLE_NAME + " AS L1 " +
                 "JOIN " + GROUP_TABLE_NAME + " AS L2 " +
                 "ON L1.TYPE = L2.TYPE " +

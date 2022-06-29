@@ -88,7 +88,7 @@ public class ListItemAdapter extends RecyclerView.Adapter<ListItemAdapter.ViewHo
         }
 
         holder.tvContent.setText(lists.get(position).getContent());
-
+        holder.tvListDate.setText(lists.get(position).getSelectDate());
         holder.cbCheck.setTag(lists.get(position));
 
         Log.e(TAG, lists.get(position).getSeq() + lists.get(position).isChecked());
@@ -135,7 +135,7 @@ public class ListItemAdapter extends RecyclerView.Adapter<ListItemAdapter.ViewHo
 
         public LinearLayout llList;
         public CheckBox cbCheck;
-        public TextView tvContent;
+        public TextView tvContent, tvListDate;
 
 
         public ViewHolder(@NonNull View itemView) {
@@ -144,6 +144,7 @@ public class ListItemAdapter extends RecyclerView.Adapter<ListItemAdapter.ViewHo
             llList = itemView.findViewById(R.id.ll_list_item);
             cbCheck = itemView.findViewById(R.id.cb_check);
             tvContent = itemView.findViewById(R.id.tv_list_content);
+            tvListDate = itemView.findViewById(R.id.tv_list_date);
 
             llList.setOnLongClickListener(new View.OnLongClickListener() {
                 @Override

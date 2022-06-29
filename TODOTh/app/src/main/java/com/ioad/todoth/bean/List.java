@@ -15,6 +15,7 @@ public class List {
     boolean isChecked;
     int typeIndex;
     int groupSeq;
+    String selectDate;
 
     public List(String seq, String type, int typeIndex, String titleName) {
         this.seq = seq;
@@ -23,11 +24,12 @@ public class List {
         this.titleName = titleName;
     }
 
-    public List(String seq, String content, String finish, boolean isChecked) {
+    public List(String seq, String content, String finish, boolean isChecked, String selectDate) {
         this.seq = seq;
         this.content = content;
         this.finish = finish;
         this.isChecked = isChecked;
+        this.selectDate = selectDate;
     }
 
     public List(String seq, String type, String titleName, String content, int groupSeq, int typeIndex) {
@@ -133,5 +135,13 @@ public class List {
 
     public void setGroupSeq(int groupSeq) {
         this.groupSeq = groupSeq;
+    }
+
+    public String getSelectDate() {
+        return selectDate;
+    }
+
+    public void setSelectDate(String selectDate) {
+        this.selectDate = selectDate;
     }
 }

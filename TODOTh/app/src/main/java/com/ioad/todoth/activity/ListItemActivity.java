@@ -1,5 +1,6 @@
 package com.ioad.todoth.activity;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -13,10 +14,13 @@ import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.CalendarView;
+import android.widget.CompoundButton;
 import android.widget.EditText;
-import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.Switch;
 import android.widget.TextView;
-import android.widget.Toast;
+import android.widget.TimePicker;
 
 import com.ioad.todoth.R;
 import com.ioad.todoth.adapter.ListItemAdapter;
@@ -25,7 +29,9 @@ import com.ioad.todoth.common.ClickCallbackListener;
 import com.ioad.todoth.common.DBHelper;
 import com.ioad.todoth.common.Util;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 
 public class ListItemActivity extends AppCompatActivity {
 
@@ -35,7 +41,7 @@ public class ListItemActivity extends AppCompatActivity {
     RecyclerView rvListItem;
     RecyclerView.Adapter adapter;
     RecyclerView.LayoutManager layoutManager;
-//    ImageView btnItemAdd;
+    //    ImageView btnItemAdd;
     TextView btnTitleUpdate, btnGroupDelete, btnItemAdd;
 
     ArrayList<List> lists;
@@ -44,12 +50,23 @@ public class ListItemActivity extends AppCompatActivity {
     Dialog dialog;
     WindowManager.LayoutParams layoutParams;
     Window window;
+
     // write dialog
     EditText etItem;
     Button btnAddCancel, btnAdd, btnKeepAdd;
+    TextView btnSetDate, tvItemDate, tvItemTime;
+    LinearLayout llItemDate;
+
 
     // delete dialog
     Button btnDeleteCancel, btnDelete;
+
+    // date write dialog
+    CalendarView cvDate;
+    Switch btnTimeSwitch;
+    LinearLayout llDateTime;
+    TimePicker tpDateTime;
+    Button btnDateCancel, btnDateAdd;
 
     String type, titleName;
     int listSeq, typeIndex;
@@ -60,6 +77,14 @@ public class ListItemActivity extends AppCompatActivity {
     ClickCallbackListener listener;
     ArrayList<String> seqs;
 
+    String selectDate;
+    String selectTime;
+    boolean isSwitched = false;
+    boolean isSelectedDate = false;
+    boolean isSelectedTime = false;
+    private long now = 0;
+    private Date date = null;
+    private SimpleDateFormat dateFormat = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -120,6 +145,7 @@ public class ListItemActivity extends AppCompatActivity {
                 String title = cursor.getString(1);
                 String content = cursor.getString(2);
                 String finish = cursor.getString(3) == null ? "N" : cursor.getString(3);
+                String selectDate = cursor.getString(4);
                 boolean isChecked = false;
 
                 if (finish.equals("N")) {
@@ -128,7 +154,7 @@ public class ListItemActivity extends AppCompatActivity {
                     isChecked = true;
                 }
 
-                list = new List(seq, content, finish, isChecked);
+                list = new List(seq, content, finish, isChecked, selectDate);
                 lists.add(list);
             }
 
@@ -178,10 +204,17 @@ public class ListItemActivity extends AppCompatActivity {
                     btnAddCancel = dialog.findViewById(R.id.btn_item_add_cancel);
                     btnAdd = dialog.findViewById(R.id.btn_item_add);
                     btnKeepAdd = dialog.findViewById(R.id.btn_item_keep_adding);
+                    btnSetDate = dialog.findViewById(R.id.btn_set_date);
+                    llItemDate = dialog.findViewById(R.id.ll_item_date);
+                    tvItemDate = dialog.findViewById(R.id.tv_item_date);
+                    tvItemTime = dialog.findViewById(R.id.tv_item_time);
+
+                    llItemDate.setVisibility(View.GONE);
 
                     btnAddCancel.setOnClickListener(dialogBtnOnClickListener);
                     btnAdd.setOnClickListener(dialogBtnOnClickListener);
                     btnKeepAdd.setOnClickListener(dialogBtnOnClickListener);
+                    btnSetDate.setOnClickListener(dialogBtnOnClickListener);
                     break;
                 case R.id.btn_update_list_group:
                     Intent intent = new Intent(ListItemActivity.this, ListAddActivity.class);
@@ -227,12 +260,13 @@ public class ListItemActivity extends AppCompatActivity {
             switch (view.getId()) {
                 case R.id.btn_item_add_cancel:
                 case R.id.btn_group_delete_cancel:
+                case R.id.btn_date_cancel:
                     dialog.dismiss();
                     break;
                 case R.id.btn_item_add:
                     content = etItem.getText().toString();
                     if (content.length() != 0) {
-                        helper.insertListData("TODO_LIST", type, titleName, content, listSeq);
+                        helper.insertListData("TODO_LIST", type, titleName, content, listSeq, selectDate, selectTime);
                         dialog.dismiss();
                         onResume();
                     } else {
@@ -248,14 +282,58 @@ public class ListItemActivity extends AppCompatActivity {
                 case R.id.btn_item_keep_adding:
                     content = etItem.getText().toString();
                     if (content.length() != 0) {
-                        helper.insertListData("TODO_LIST", type, titleName, content, listSeq);
+                        helper.insertListData("TODO_LIST", type, titleName, content, listSeq, selectDate, selectTime);
                         dialog.dismiss();
                         onResume();
                         etItem.setText("");
+                        llItemDate.setVisibility(View.INVISIBLE);
                         dialog.show();
                     } else {
                         Util.showToast(ListItemActivity.this, "리스트를 작성해 주세요!");
                     }
+                    break;
+                case R.id.btn_set_date:
+                    dialog = new Dialog(ListItemActivity.this);
+                    dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+                    dialog.setContentView(R.layout.write_date_dialog_layout);
+
+                    layoutParams = new WindowManager.LayoutParams();
+                    layoutParams.copyFrom(dialog.getWindow().getAttributes());
+                    layoutParams.width = WindowManager.LayoutParams.MATCH_PARENT;
+                    layoutParams.height = WindowManager.LayoutParams.WRAP_CONTENT;
+
+                    window = dialog.getWindow();
+                    window.setAttributes(layoutParams);
+                    dialog.show();
+
+                    cvDate = dialog.findViewById(R.id.cv_date);
+                    btnTimeSwitch = dialog.findViewById(R.id.btn_time_switch);
+                    llDateTime = dialog.findViewById(R.id.ll_date_time);
+                    tpDateTime = dialog.findViewById(R.id.tp_date_time);
+                    btnDateCancel = dialog.findViewById(R.id.btn_date_cancel);
+                    btnDateAdd = dialog.findViewById(R.id.btn_date_add);
+
+                    llDateTime.setVisibility(View.GONE);
+
+                    btnTimeSwitch.setOnCheckedChangeListener(switchOnChangeListener);
+                    cvDate.setOnDateChangeListener(dateChangeListener);
+                    tpDateTime.setOnTimeChangedListener(timeChangedListener);
+                    btnDateCancel.setOnClickListener(dialogBtnOnClickListener);
+                    btnDateAdd.setOnClickListener(dialogBtnOnClickListener);
+                    break;
+                case R.id.btn_date_add:
+                    if (!isSelectedDate) {
+                        selectDate = getCurrentDate();
+                    }
+                    if (isSwitched) {
+                        if (!isSelectedTime) {
+                            selectTime = getCurrentTime();
+                        }
+                    }
+                    dialog.dismiss();
+                    llItemDate.setVisibility(View.VISIBLE);
+                    tvItemDate.setText(selectDate);
+                    tvItemTime.setText(selectTime);
                     break;
             }
         }
@@ -289,4 +367,68 @@ public class ListItemActivity extends AppCompatActivity {
             }
         }
     }
+
+    CompoundButton.OnCheckedChangeListener switchOnChangeListener = new CompoundButton.OnCheckedChangeListener() {
+        @Override
+        public void onCheckedChanged(CompoundButton compoundButton, boolean isCheck) {
+            if (isCheck) {
+                llDateTime.setVisibility(View.VISIBLE);
+                isSwitched = true;
+            } else {
+                llDateTime.setVisibility(View.GONE);
+                isSwitched = false;
+            }
+        }
+    };
+
+    CalendarView.OnDateChangeListener dateChangeListener = new CalendarView.OnDateChangeListener() {
+        @Override
+        public void onSelectedDayChange(@NonNull CalendarView calendarView, int year, int month, int day) {
+            String yearStr = String.valueOf(year);
+            String monthStr = month < 10 ? "0" + (month + 1) : String.valueOf(month + 1);
+            String dayStr = day < 10 ? "0" + day : String.valueOf(day);
+            selectDate = yearStr + "-" + monthStr + "-" + dayStr;
+            Util.showToast(ListItemActivity.this, selectDate);
+            isSelectedDate = true;
+        }
+    };
+
+    TimePicker.OnTimeChangedListener timeChangedListener = new TimePicker.OnTimeChangedListener() {
+        @Override
+        public void onTimeChanged(TimePicker timePicker, int hour, int minute) {
+            String hourStr = "";
+            if (hour < 10) {
+                hourStr = "0" + hour;
+            } else {
+                if (hour > 12) {
+                    hourStr = String.valueOf(hour -= 12);
+                } else {
+                    hourStr = String.valueOf(hour);
+                }
+            }
+            String minuteStr = minute < 10 ? "0" + minute : String.valueOf(minute);
+            selectTime = "오후 " + hourStr + ":" + minuteStr;
+            isSelectedTime = true;
+        }
+    };
+
+
+    private String getCurrentDate() {
+        String result;
+        now = System.currentTimeMillis();
+        date = new Date(now);
+        dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        result = dateFormat.format(date);
+        return result;
+    }
+
+    private String getCurrentTime() {
+        String result;
+        now = System.currentTimeMillis();
+        date = new Date(now);
+        dateFormat = new SimpleDateFormat("a h:mm");
+        result = dateFormat.format(date);
+        return result;
+    }
+
 }

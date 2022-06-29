@@ -18,9 +18,18 @@
             />
         <TextView
             android:id="@+id/tv_list_content"
+            android:layout_width="0px"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="content"
+            />
+        <TextView
+            android:id="@+id/tv_list_date"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="content"
+            android:text="xxxx-xx-xx"
+            android:gravity="right"
+            android:layout_marginRight="20dp"
             />
     </LinearLayout>
     <View
