@@ -33,7 +33,6 @@ import com.ioad.todoth.common.Util;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Date;
 
 public class ListItemActivity extends AppCompatActivity {
@@ -88,6 +87,7 @@ public class ListItemActivity extends AppCompatActivity {
     boolean isSwitched = false;
     boolean isSelectedDate = false;
     boolean isSelectedTime = false;
+    boolean isAllFinish = false;
     private long now = 0;
     private Date date = null;
     private SimpleDateFormat dateFormat = null;
@@ -148,6 +148,12 @@ public class ListItemActivity extends AppCompatActivity {
     }
 
     private void getList(String type, int listSeq, boolean isVisibleStatus, boolean isAllFinish) {
+        Log.d(TAG, "getList ------------------------- ");
+        Log.d(TAG, "type " + type);
+        Log.d(TAG, "listSeq " + listSeq);
+        Log.d(TAG, "isVisibleStatus " + isVisibleStatus);
+        Log.d(TAG, "isAllFinish " + isAllFinish);
+
         cursor = helper.selectListData("TODO_LIST", type, listSeq);
         lists.clear();
         if (cursor.getCount() != 0) {
@@ -157,34 +163,32 @@ public class ListItemActivity extends AppCompatActivity {
                 String content = cursor.getString(2);
                 String finish = cursor.getString(3) == null ? "N" : cursor.getString(3);
                 String selectDate = cursor.getString(4);
+                String selectTime = cursor.getString(5);
                 boolean isChecked = false;
 
-
-                if (!isVisibleStatus) {
-                    if (!isAllFinish) {
-                        seqs.clear();
-                        if (finish.equals("N")) {
-                            isChecked = false;
-                        } else {
-                            isChecked = true;
-                        }
+                if (isAllFinish) {
+                    isChecked = true;
+                    seqs.add(seq);
+                    Log.e(TAG, "seqs ::: " + seqs.toString());
+                } else {
+                    if (finish.equals("N")) {
+                        isChecked = false;
                     } else {
                         isChecked = true;
-                        seqs.add(seq);
                     }
-                    list = new List(seq, content, finish, isChecked, selectDate);
+                }
+
+                // 상관없이 일단 다 가져온 후에
+                // 완료숨기기 버튼을 클릭하지 않으면 그대로 출력,
+                // 완료숨기기 버튼을 클릭하면 다 가져온 정보에서 "N"만 출력
+                if (!isVisibleStatus) {
+                    list = new List(seq, content, finish, isChecked, selectDate, selectTime);
                     lists.add(list);
                 } else {
-                    if (!isAllFinish) {
-                        seqs.clear();
-                        if (finish.equals("N")) {
-                            isChecked = false;
-                        }
-                    } else {
-                        isChecked = true;
+                    if (!isChecked) {
+                        list = new List(seq, content, finish, isChecked, selectDate, selectTime);
+                        lists.add(list);
                     }
-                    list = new List(seq, content, finish, isChecked, selectDate);
-                    lists.add(list);
                 }
 
             }
@@ -252,10 +256,12 @@ public class ListItemActivity extends AppCompatActivity {
                 case R.id.btn_finish_invisible:
                     if (!isVisibleStatus) {
                         isVisibleStatus = true;
+                        btnFinishInvisible.setText("☑️ 완료 보이기");
                     } else {
                         isVisibleStatus = false;
+                        btnFinishInvisible.setText("☑️ 완료 숨기기");
                     }
-                    getList(type, listSeq, isVisibleStatus, false);
+                    getList(type, listSeq, isVisibleStatus, isAllFinish);
                     break;
             }
         }
@@ -268,7 +274,11 @@ public class ListItemActivity extends AppCompatActivity {
             String content;
             switch (view.getId()) {
                 case R.id.btn_item_add_cancel:
+                    dialog.dismiss();
+                    break;
                 case R.id.btn_group_delete_cancel:
+                    dialog.dismiss();
+                    break;
                 case R.id.btn_date_cancel:
                     dialog.dismiss();
                     break;
@@ -411,7 +421,8 @@ public class ListItemActivity extends AppCompatActivity {
             } else {
                 cbAllFinish.setText("전체 완료");
             }
-            getList(type, listSeq, false, isChecked);
+            isAllFinish = isChecked;
+            getList(type, listSeq, isVisibleStatus, isAllFinish);
         }
     };
 

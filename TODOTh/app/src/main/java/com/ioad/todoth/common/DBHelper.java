@@ -111,7 +111,8 @@ public class DBHelper extends SQLiteOpenHelper {
                 "    L1.TYPE, " +
                 "    L1.CONTENT, " +
                 "    L1.FINISH, " +
-                "    L1.SELECT_DATE " +
+                "    L1.SELECT_DATE, " +
+                "    L1.SELECT_TIME " +
                 "FROM " + LIST_TABLE_NAME + " AS L1 " +
                 "JOIN " + GROUP_TABLE_NAME + " AS L2 " +
                 "ON L1.TYPE = L2.TYPE " +
@@ -168,11 +169,13 @@ public class DBHelper extends SQLiteOpenHelper {
         db.execSQL(updateQuery);
     }
 
-    public void updateListItemData(int index, String content) {
+    public void updateListItemData(int index, String content, String selectDate, String selectTime) {
         db = this.getWritableDatabase();
         String updateQuery = "UPDATE " + LIST_TABLE_NAME +
                 " SET CONTENT = '" + content + "', " +
-                "UPDATE_DATE = '" + getTime() + "' " +
+                "UPDATE_DATE = '" + getTime() + "', " +
+                "SELECT_DATE = '" + selectDate + "', " +
+                "SELECT_TIME = '" + selectTime + "' " +
                 "WHERE INDEX_NUM = " + index + ";";
         Log.e(TAG, updateQuery);
         db.execSQL(updateQuery);
