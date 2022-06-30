@@ -81,14 +81,14 @@ public class DBHelper extends SQLiteOpenHelper {
                 "'SELECT_TIME', " +
                 "'ADD_DATE') " +
                 "VALUES ('" +
-                    type + "', '" +
-                    titleName + "', '" +
-                    groupIndex + "', '" +
-                    content + "', " +
-                    "'N', '" +
-                    selectDate + "', '" +
-                    selectTime + "', '" +
-                    getTime() + "');";
+                type + "', '" +
+                titleName + "', '" +
+                groupIndex + "', '" +
+                content + "', " +
+                "'N', '" +
+                selectDate + "', '" +
+                selectTime + "', '" +
+                getTime() + "');";
         Log.e(TAG, insertQuery);
         db.execSQL(insertQuery);
     }
@@ -104,7 +104,7 @@ public class DBHelper extends SQLiteOpenHelper {
         return cursor;
     }
 
-    public Cursor selectListData(String tableName, String type, int listSeq) {
+    public Cursor selectListData(String columnName, String type, int listSeq) {
         db = getReadableDatabase();
         String selectQuery = "SELECT " +
                 "    L1.INDEX_NUM, " +
@@ -119,8 +119,19 @@ public class DBHelper extends SQLiteOpenHelper {
                 "WHERE L1.TYPE = '" + type + "' " +
                 "AND L1.GROUP_INDEX = L2.INDEX_NUM " +
                 "AND L1.GROUP_INDEX = '" + listSeq + "'" +
-                "AND L1.DELETE_DATE IS NULL " +
-                "ORDER by L1.INDEX_NUM DESC;";
+                "AND L1.DELETE_DATE IS NULL ";
+
+        switch (columnName) {
+            case "INDEX_NUM":
+                selectQuery += "ORDER by L1." + columnName + " DESC";
+                break;
+            case "ADD_DATE":
+                selectQuery += "ORDER by L1." + columnName + " DESC, L1.SELECT_DATE ASC";
+                break;
+            case "SELECT_DATE":
+                selectQuery += "ORDER by L1." + columnName + " ASC";
+        }
+
         Log.e(TAG, selectQuery);
         cursor = db.rawQuery(selectQuery, null);
         return cursor;
@@ -219,7 +230,6 @@ public class DBHelper extends SQLiteOpenHelper {
         Log.e(TAG, deleteQuery);
         db.execSQL(deleteQuery);
     }
-
 
 
     private String getTime() {

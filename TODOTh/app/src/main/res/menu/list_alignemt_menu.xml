@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:id="@+id/list_add_asc_alignment"
+        android:title="최신 등록순"/>
+    <item android:id="@+id/list_finish_date_alignment"
+        android:title="완료 날짜순"/>
+</menu>

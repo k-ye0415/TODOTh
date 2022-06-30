@@ -10,6 +10,7 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
@@ -20,6 +21,7 @@ import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
+import android.widget.PopupMenu;
 import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.TimePicker;
@@ -47,6 +49,8 @@ public class ListItemActivity extends AppCompatActivity {
     TextView btnItemAdd, btnFinishInvisible;
     FrameLayout flGroupTitle;
     CheckBox cbAllFinish;
+    LinearLayout llListAlignment;
+    TextView tvListAlignment;
 
     private int[] colors;
     ArrayList<List> lists;
@@ -82,6 +86,7 @@ public class ListItemActivity extends AppCompatActivity {
     ClickCallbackListener listener;
     ArrayList<String> seqs;
 
+    String columnName = "INDEX_NUM";
     String selectDate;
     String selectTime;
     boolean isSwitched = false;
@@ -103,6 +108,8 @@ public class ListItemActivity extends AppCompatActivity {
         flGroupTitle = findViewById(R.id.fl_group_title);
         btnFinishInvisible = findViewById(R.id.btn_finish_invisible);
         cbAllFinish = findViewById(R.id.cb_all_finish);
+        llListAlignment = findViewById(R.id.ll_list_alignment);
+        tvListAlignment = findViewById(R.id.btn_list_alignment);
 
         colors = getResources().getIntArray(R.array.groupColor);
         helper = new DBHelper(ListItemActivity.this);
@@ -127,6 +134,7 @@ public class ListItemActivity extends AppCompatActivity {
         btnItemAdd.setOnClickListener(btnOnClickListener);
         btnFinishInvisible.setOnClickListener(btnOnClickListener);
         cbAllFinish.setOnCheckedChangeListener(checkedChangeListener);
+        llListAlignment.setOnClickListener(btnOnClickListener);
 
     }
 
@@ -144,17 +152,17 @@ public class ListItemActivity extends AppCompatActivity {
         Log.d(TAG, "TYPE_INDEX " + typeIndex);
         Log.d(TAG, "TITLE_NAME " + titleName);
         tvItemTitle.setText(titleName);
-        getList(type, listSeq, false, false);
+        getList(columnName, type, listSeq, false, false);
     }
 
-    private void getList(String type, int listSeq, boolean isVisibleStatus, boolean isAllFinish) {
+    private void getList(String columnName, String type, int listSeq, boolean isVisibleStatus, boolean isAllFinish) {
         Log.d(TAG, "getList ------------------------- ");
         Log.d(TAG, "type " + type);
         Log.d(TAG, "listSeq " + listSeq);
         Log.d(TAG, "isVisibleStatus " + isVisibleStatus);
         Log.d(TAG, "isAllFinish " + isAllFinish);
 
-        cursor = helper.selectListData("TODO_LIST", type, listSeq);
+        cursor = helper.selectListData(columnName, type, listSeq);
         lists.clear();
         if (cursor.getCount() != 0) {
             while (cursor.moveToNext()) {
@@ -261,7 +269,30 @@ public class ListItemActivity extends AppCompatActivity {
                         isVisibleStatus = false;
                         btnFinishInvisible.setText("☑️ 완료 숨기기");
                     }
-                    getList(type, listSeq, isVisibleStatus, isAllFinish);
+                    getList(columnName, type, listSeq, isVisibleStatus, isAllFinish);
+                    break;
+                case R.id.ll_list_alignment:
+                    PopupMenu popupMenu = new PopupMenu(ListItemActivity.this, tvListAlignment);
+                    popupMenu.inflate(R.menu.list_alignemt_menu);
+                    popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                        @Override
+                        public boolean onMenuItemClick(MenuItem menuItem) {
+                            switch (menuItem.getItemId()) {
+                                case R.id.list_add_asc_alignment:
+                                    columnName = "INDEX_NUM";
+                                    getList(columnName, type, listSeq, isVisibleStatus, isAllFinish);
+                                    tvListAlignment.setText("최신 등록순");
+                                    break;
+                                case R.id.list_finish_date_alignment:
+                                    columnName = "SELECT_DATE";
+                                    getList(columnName, type, listSeq, isVisibleStatus, isAllFinish);
+                                    tvListAlignment.setText("완료 날짜순");
+                                    break;
+                            }
+                            return false;
+                        }
+                    });
+                    popupMenu.show();
                     break;
             }
         }
@@ -422,7 +453,7 @@ public class ListItemActivity extends AppCompatActivity {
                 cbAllFinish.setText("전체 완료");
             }
             isAllFinish = isChecked;
-            getList(type, listSeq, isVisibleStatus, isAllFinish);
+            getList(columnName, type, listSeq, isVisibleStatus, isAllFinish);
         }
     };
 
