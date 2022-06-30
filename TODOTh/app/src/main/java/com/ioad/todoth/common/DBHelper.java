@@ -139,7 +139,14 @@ public class DBHelper extends SQLiteOpenHelper {
 
     public Cursor selectSearchData(String search) {
         db = getReadableDatabase();
-        String selectQuery = "SELECT L2.INDEX_NUM, L2.TYPE, L2.TITLE_NAME, L2.CONTENT, L1.INDEX_NUM, L1.TYPE_INDEX " +
+        String selectQuery = "SELECT " +
+                "L2.INDEX_NUM, " +
+                "L2.TYPE, " +
+                "L2.TITLE_NAME, " +
+                "L2.CONTENT, " +
+                "L1.INDEX_NUM, " +
+                "L1.TYPE_INDEX, " +
+                "L2.FINISH " +
                 "FROM LIST_GROUP as L1 " +
                 "JOIN TODO_LIST as L2 " +
                 "ON L1.TYPE = L2.TYPE " +
@@ -155,7 +162,14 @@ public class DBHelper extends SQLiteOpenHelper {
 
     public Cursor selectSearchFinishData(String search) {
         db = getReadableDatabase();
-        String selectQuery = "SELECT L2.INDEX_NUM, L2.TYPE, L2.TITLE_NAME, L2.CONTENT, L1.INDEX_NUM, L1.TYPE_INDEX " +
+        String selectQuery = "SELECT " +
+                "L2.INDEX_NUM, " +
+                "L2.TYPE, " +
+                "L2.TITLE_NAME, " +
+                "L2.CONTENT, " +
+                "L1.INDEX_NUM, " +
+                "L1.TYPE_INDEX, " +
+                "L2.FINISH " +
                 "FROM LIST_GROUP as L1 " +
                 "JOIN TODO_LIST as L2 " +
                 "ON L1.TYPE = L2.TYPE " +

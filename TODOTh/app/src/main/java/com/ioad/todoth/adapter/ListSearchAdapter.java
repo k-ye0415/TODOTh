@@ -2,6 +2,7 @@ package com.ioad.todoth.adapter;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Paint;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,11 +27,13 @@ public class ListSearchAdapter extends RecyclerView.Adapter<ListSearchAdapter.Vi
     private Context mContext;
     private int layout = 0;
     private ArrayList<List> lists;
+    private int[] colors;
 
-    public ListSearchAdapter(Context mContext, int layout, ArrayList<List> lists) {
+    public ListSearchAdapter(Context mContext, int layout, ArrayList<List> lists, int[] colors) {
         this.mContext = mContext;
         this.layout = layout;
         this.lists = lists;
+        this.colors = colors;
     }
 
     @NonNull
@@ -43,7 +46,15 @@ public class ListSearchAdapter extends RecyclerView.Adapter<ListSearchAdapter.Vi
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        holder.ivImage.setImageResource(Util.listImage[lists.get(position).getTypeIndex()]);
+
+        if (lists.get(position).getFinish().equals("Y")) {
+            holder.tvContent.setPaintFlags(Paint.STRIKE_THRU_TEXT_FLAG);
+        } else {
+            holder.tvContent.setPaintFlags(0);
+        }
+
+//        holder.ivImage.setImageResource(Util.listImage[lists.get(position).getTypeIndex()]);
+        holder.ivImage.setBackgroundColor(colors[lists.get(position).getTypeIndex()]);
         holder.tvContent.setText(lists.get(position).getContent());
         holder.tvTitle.setText(lists.get(position).getTitleName());
     }
@@ -56,7 +67,7 @@ public class ListSearchAdapter extends RecyclerView.Adapter<ListSearchAdapter.Vi
     public class ViewHolder extends RecyclerView.ViewHolder {
 
         public LinearLayout llSearch;
-        public ImageView ivImage;
+        public View ivImage;
         public TextView tvContent, tvTitle;
 
         public ViewHolder(@NonNull View itemView) {

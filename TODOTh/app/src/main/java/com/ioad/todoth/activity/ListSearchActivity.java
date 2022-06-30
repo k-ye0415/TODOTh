@@ -45,6 +45,8 @@ public class ListSearchActivity extends AppCompatActivity {
     boolean cbIsCheck;
     boolean btnIsClick;
 
+    int[] colors;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -54,6 +56,8 @@ public class ListSearchActivity extends AppCompatActivity {
         btnSearch = findViewById(R.id.btn_search_list);
         checkBox = findViewById(R.id.cb_check_box);
         rvSearchList = findViewById(R.id.rv_search_list);
+
+        colors = getResources().getIntArray(R.array.groupColor);
 
         helper = new DBHelper(ListSearchActivity.this);
         lists = new ArrayList<>();
@@ -130,15 +134,16 @@ public class ListSearchActivity extends AppCompatActivity {
                 String content = cursor.getString(3);
                 int listGroupSeq = Integer.parseInt(cursor.getString(4));
                 int typeIndex = Integer.parseInt(cursor.getString(5));
+                String finish = cursor.getString(6);
 
-                list = new List(seq, title, titleName, content, listGroupSeq, typeIndex);
+                list = new List(seq, title, titleName, content, listGroupSeq, typeIndex, finish);
                 lists.add(list);
             }
 
 
             layoutManager = new LinearLayoutManager(ListSearchActivity.this);
             rvSearchList.setLayoutManager(layoutManager);
-            adapter = new ListSearchAdapter(ListSearchActivity.this, R.layout.search_list_item, lists);
+            adapter = new ListSearchAdapter(ListSearchActivity.this, R.layout.search_list_item, lists, colors);
             rvSearchList.setAdapter(adapter);
 
         } else {
@@ -159,15 +164,16 @@ public class ListSearchActivity extends AppCompatActivity {
                 String content = cursor.getString(3);
                 int listGroupSeq = Integer.parseInt(cursor.getString(4));
                 int typeIndex = Integer.parseInt(cursor.getString(5));
+                String finish = cursor.getString(6);
 
-                list = new List(seq, title, titleName, content, listGroupSeq, typeIndex);
+                list = new List(seq, title, titleName, content, listGroupSeq, typeIndex, finish);
                 lists.add(list);
             }
 
 
             layoutManager = new LinearLayoutManager(ListSearchActivity.this);
             rvSearchList.setLayoutManager(layoutManager);
-            adapter = new ListSearchAdapter(ListSearchActivity.this, R.layout.search_list_item, lists);
+            adapter = new ListSearchAdapter(ListSearchActivity.this, R.layout.search_list_item, lists, colors);
             rvSearchList.setAdapter(adapter);
 
         } else {

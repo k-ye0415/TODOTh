@@ -34,13 +34,14 @@ public class List {
         this.selectTime = selectTime;
     }
 
-    public List(String seq, String type, String titleName, String content, int groupSeq, int typeIndex) {
+    public List(String seq, String type, String titleName, String content, int groupSeq, int typeIndex, String finish) {
         this.seq = seq;
         this.type = type;
         this.content = content;
         this.titleName = titleName;
         this.groupSeq = groupSeq;
         this.typeIndex = typeIndex;
+        this.finish = finish;
     }
 
     public String getType() {
